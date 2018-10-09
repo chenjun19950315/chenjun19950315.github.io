@@ -1,0 +1,28 @@
+哈希表：
+bool duplicate(int numbers[], int length, int *duplication)
+{
+
+	
+	if (numbers == nullptr || length == 0)
+		return 0;
+	else {
+		const int l = length;
+		int numbers1[l];
+
+		for (int i = 0; i < length; i++)
+			numbers1[i] = -1;
+		for (int i = 0; i < length; i++)
+		{
+			if (numbers1[numbers[i]] == numbers[i])
+			{
+				*duplication = numbers[i];
+					return true;
+			}
+			else {
+				numbers1[numbers[i]] = numbers[i];
+			}
+		}
+		return false;
+		
+	}
+}

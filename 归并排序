@@ -1,0 +1,101 @@
+shared_ptr<vector<int>> generateRandomArray(int size, int value)
+{
+	uniform_int_distribution<unsigned> u1(0, size);
+    uniform_int_distribution<unsigned> u2(0, value);
+	default_random_engine e(time(0));
+	int n = u1(e);
+	shared_ptr<vector<int>> arr = make_shared<vector<int>>(n);
+	for (int i = 0; i <n; i++)
+		(*arr)[i]=u2(e) - u2(e);
+	
+	return arr;
+}
+shared_ptr<vector<int>> copyArray(shared_ptr<vector<int>> old)
+{
+	if ((*old).size() == 0)
+		return nullptr;
+	shared_ptr<vector<int>> newArray = make_shared<vector<int>>(old->size());
+	for (int i = 0; i < old->size(); ++i)
+		(*newArray)[i]=((*old)[i]);
+	return newArray;
+	
+}
+bool isEqual(shared_ptr<vector<int>> p1, shared_ptr<vector<int>> p2)
+{
+	if ((*p1).size() != (*p2).size())
+		return false;
+	else {
+		for (int i = 0; i < p1->size(); ++i)
+		{
+			if ((*p1)[i] != (*p2)[i])
+				return false;
+		}
+		return true;
+	}
+}
+void rightMathod(shared_ptr<vector<int>> arr)
+{
+	auto begin = arr->begin();
+	auto end = arr->end();
+	sort(begin, end);
+}
+void merge(shared_ptr<vector<int>> arr, shared_ptr<vector<int>> help, int l, int mid,int r)
+{
+	int p = l;
+	int p1 = l;
+	int p2 = mid + 1;
+	while (p1 <= mid &&p2 <= r)
+	{
+		if ((*arr)[p1] < (*arr)[p2])
+			(*help)[p++] = (*arr)[p1++];
+		else
+			(*help)[p++] = (*arr)[p2++];
+	}
+	while(p1<=mid)
+		(*help)[p++] = (*arr)[p1++];
+	while(p2<=r)
+		(*help)[p++] = (*arr)[p2++];
+	for (int i = l; i <= r; i++)
+		(*arr)[i] = (*help)[i];
+}
+void mergeSort(shared_ptr<vector<int>> arr, shared_ptr<vector<int>> help,int l,int r)
+{
+	if (l == r)
+		return;
+	int mid = l + ((r - l) >> 1);
+	mergeSort(arr, help, l, mid);
+	mergeSort(arr, help, mid + 1, r);
+	merge(arr, help, l, mid, r);
+}
+void printArray(shared_ptr<vector<int>> arr)
+{
+	for (auto it = arr->begin(); it != arr->end(); it++)
+		cout << *it << " ";
+	cout << endl;
+}
+int main()
+{
+	bool succeed = true;
+	shared_ptr<vector<int>> p;
+	shared_ptr<vector<int>> p1;
+	shared_ptr<vector<int>> p2;
+	p = generateRandomArray(20, 20);
+	p1 = copyArray(p);
+	p2 = copyArray(p);
+	shared_ptr<vector<int>> help = make_shared<vector<int>>(p1->size());
+	rightMathod(p);
+	mergeSort(p1, help,0,p1->size()-1);
+	for (int i = 0; i < 1000000; ++i)
+		if(!isEqual(p,p1))
+		{
+			succeed = false;
+			for (auto it = p2->begin(); it != p2->end(); it++)
+				cout << *it << " ";
+			cout << endl;
+			break;
+		}
+	string s = succeed ? "pass" : "false";
+	cout <<s << endl;
+
+	return 0;
+}

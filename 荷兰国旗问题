@@ -1,0 +1,20 @@
+//arr为要处理的数组，left,right是要处理的范围，num是荷兰国旗中的那个中间数
+//给定一个数组arr，和一个数num，请把小于num的数放在数组的
+//左边，等于num的数放在数组的中间，大于num的数放在数组的右边。引出快排的思想
+void partition(vector<int> &arr, int left, int right, int num)
+{
+	int less = left - 1;
+	int more = right + 1;
+	int cur = left;
+	
+	while (cur < more)
+	{
+		if (arr[cur] == num)
+			++cur;
+		else if (arr[cur] < num)
+			swap(arr[cur++], arr[++less ]);	
+		else 
+			swap(arr[cur], arr[--more]);
+		
+	}
+}

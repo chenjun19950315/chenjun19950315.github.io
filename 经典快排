@@ -1,0 +1,32 @@
+vector<int> partition(vector<int> &arr, int left, int right)//荷兰国旗问题
+{
+	int num = arr[right];//每次把最后一个数当成中间数
+	int less = left - 1;
+	int more = right+1;
+	int cur = left;
+	vector<int> result;
+	while (cur < more)
+	{
+		if (arr[cur] == num)
+			++cur;
+		else if (arr[cur] < num)
+			swap(arr[cur++], arr[++less ]);	
+		else 
+			swap(arr[cur], arr[--more]);
+	}
+	
+	result.push_back(less);
+	result.push_back(more);
+	return result;
+}
+void quickSort(vector<int> &arr, int left, int right)
+{
+	
+	vector<int> result;
+	if (left <right)
+	{
+		result = partition(arr, left, right);//得到左边界和右边界
+		quickSort(arr, left, result[0]);
+		quickSort(arr, result[1], right);
+	}
+}

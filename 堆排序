@@ -1,0 +1,47 @@
+void heapInsert(vector<int> &arr, int index)       
+{
+	//while(index>=0 && arr[index]>arr[(index-1)/2]),改进，不需要判断index>=0;(0-1)/2=0,arr[0]>arr[0]不成立，程序结束，如果父节点小，则交换
+	while (arr[index] > arr[(index - 1) / 2])
+	{
+		swap(arr[index], arr[(index - 1) / 2]);
+		index = (index - 1) / 2;
+	}
+}
+void heapDelete(vector<int> &arr, int index, int size)
+{
+	int leftChild = index * 2 + 1;
+	int maxIndex;
+	while (leftChild <= size - 1)
+	{
+		
+		if (leftChild + 1 <= size - 1 && arr[leftChild + 1] > arr[leftChild])  //选取左右子树的最大值的索引
+			maxIndex = leftChild + 1;
+		else
+			maxIndex = leftChild;
+		if (arr[maxIndex] < arr[index])//当前索引的值与子树最大值的索引的值
+			maxIndex = index;
+		if (maxIndex == index) //如果当前索引的值已大于左右节点，大根堆排序成功
+			break;
+		else
+		{
+			swap(arr[maxIndex], arr[index]);
+			index = maxIndex;        
+			leftChild = index * 2 + 1;
+		}
+	}
+}
+void heapSort(vector<int> &arr)
+{
+	if (arr.size() < 2)
+		return;
+	for (int i = 0; i < arr.size(); i++) //初始化一个大根堆
+		heapInsert(arr, i);
+	int size = arr.size();
+	swap(arr[0], arr[--size]);
+	while (size > 1)      //每次将大根堆的顶部（即整个数组最大值）与最后一个数交换，并重排大根堆
+	{
+		heapDelete(arr, 0, size);
+		swap(arr[0], arr[--size]);
+	}
+	
+}

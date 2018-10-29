@@ -1,0 +1,153 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include<array>
+#include<forward_list>
+#include <algorithm>
+#include<numeric>
+#include <list>
+#include<iterator>
+#include <map>
+#include <utility>
+#include <random>
+#include <set>
+#include <unordered_map>
+#include<memory>
+#include <cstring>
+#include <stdlib.h>
+#include <math.h>
+#include <Windows.h>
+#include <time.h>
+#include<deque>
+#include<queue>
+#include<assert.h>
+#include <functional>
+#include <stdexcept>
+#include "stdio.h"
+#include "conio.h"
+using namespace std;
+using namespace std::placeholders;
+#define  _SCL_SECURE_NO_WARNINGS
+vector<int> generateRandomArray(int size, int value)
+{
+	uniform_int_distribution<unsigned> u1(0, size);
+	uniform_int_distribution<unsigned> u2(0, value);
+	default_random_engine e(time(0));
+	int n = u1(e);
+	vector<int> arr(n);
+	for (int i = 0; i < n; i++)
+		arr[i] = u2(e) - u2(e);
+	return arr;
+}
+vector<int> copyArray(vector<int> &old)
+{
+
+	vector<int> newArray(old.size());
+	for (int i = 0; i < old.size(); ++i)
+		newArray[i] = old[i];
+	return newArray;
+
+}
+bool isEqual(vector<int> &p1, vector<int> &p2)
+{
+	if (p1.size() != p2.size())
+		return false;
+	else {
+		for (int i = 0; i < p1.size(); ++i)
+		{
+			if (p1[i] != p2[i])
+				return false;
+		}
+		return true;
+	}
+}
+void printArray(const vector<int>& arr)
+{
+	for (auto it = arr.begin(); it != arr.end(); it++)
+		cout << *it << " ";
+	cout << endl;
+}
+
+//arr为要处理的数组，left,right是要处理的范围，num是荷兰国旗中的那个中间数
+vector<int> partition(vector<int> &arr, int left, int right)
+{
+	uniform_int_distribution<unsigned> u1(left, right);
+	
+	default_random_engine e(time(0));
+	int ra = u1(e);
+	int num = arr[ra];//产生随机数
+	int less = left - 1;
+	int more = right+1;
+	int cur = left;
+	vector<int> result;
+	while (cur < more)
+	{
+		if (arr[cur] == num)
+			++cur;
+		else if (arr[cur] < num)
+			swap(arr[cur++], arr[++less ]);	
+		else 
+			swap(arr[cur], arr[--more]);
+	}
+	
+	result.push_back(less);
+	result.push_back(more);
+	return result;
+}
+void quickSort(vector<int> &arr, int left, int right)
+{
+	
+	vector<int> result;
+	if (left <right)
+	{
+		result = partition(arr, left, right);
+		quickSort(arr, left, result[0]);
+		quickSort(arr, result[1], right);
+	}
+}
+
+void rightMathod(vector<int> &arr)
+{
+
+	sort(arr.begin(), arr.end());
+	
+
+}
+
+int main()
+{
+	clock_t start, end;
+	start = clock();
+	long long sum1 = 0;
+	long long sum2 = 0;
+	bool succeed = true;
+	vector<int> p;
+	vector<int> p1;
+	vector<int> p2;
+
+	p = generateRandomArray(100,200);
+	p1 = copyArray(p);
+	p2 = copyArray(p);
+
+	vector<int> a = { 1,12,13,3,4 };
+	for (int i = 0; i < 10000; ++i)
+	{
+
+		quickSort(p, 0, p.size()-1);
+		rightMathod(p1);
+		if (!isEqual(p, p1))
+		{
+			succeed = false;
+			printArray(p2);
+			break;
+		}
+	}
+	string s = succeed ? "pass" : "false";
+	cout << s << endl;
+	end = clock();
+	double duration = ((double)(end - start)) / (CLK_TCK);
+	cout << "time:" << duration << endl;
+	return 0;
+}

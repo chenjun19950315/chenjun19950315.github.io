@@ -1,0 +1,164 @@
+//给定一个数组，求如果排序之后，相邻两数的最大差值，要求时间复杂度O(N)，且要求不能用非基于比较的排序，左神基础班三
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include<array>
+#include<forward_list>
+#include <algorithm>
+#include<numeric>
+#include <list>
+#include<iterator>
+#include <map>
+#include <utility>
+#include <random>
+#include <set>
+#include <unordered_map>
+#include<memory>
+#include <cstring>
+#include <stdlib.h>
+#include <math.h>
+#include <Windows.h>
+#include <time.h>
+#include<deque>
+#include<queue>
+#include<assert.h>
+#include <functional>
+#include <stdexcept>
+#include "stdio.h"
+#include "conio.h"
+using namespace std;
+using namespace std::placeholders;
+#define  _SCL_SECURE_NO_WARNINGS
+vector<int> generateRandomArray(int size, int value)
+{
+	uniform_int_distribution<unsigned> u1(0, size);
+	uniform_int_distribution<unsigned> u2(0, value);
+	default_random_engine e(time(0));
+	int n = u1(e);
+	vector<int> arr(n);
+	for (int i = 0; i < n; i++)
+		arr[i] = u2(e) - u2(e);
+	return arr;
+}
+vector<int> copyArray(vector<int> &old)
+{
+
+	vector<int> newArray(old.size());
+	for (int i = 0; i < old.size(); ++i)
+		newArray[i] = old[i];
+	return newArray;
+
+}
+bool isEqual(vector<int> &p1, vector<int> &p2)
+{
+	if (p1.size() != p2.size())
+		return false;
+	else {
+		for (int i = 0; i < p1.size(); ++i)
+		{
+			if (p1[i] != p2[i])
+				return false;
+		}
+		return true;
+	}
+}
+void printArray(const vector<int>& arr)
+{
+	for (auto it = arr.begin(); it != arr.end(); it++)
+		cout << *it << " ";
+	cout << endl;
+}
+
+
+int rightMathod(vector<int> &arr)
+{
+
+	sort(arr.begin(), arr.end());
+	int maxNum = -1;
+	for (int i = 0; i < arr.size()-1; i++)
+		maxNum = max(arr[i + 1] - arr[i], maxNum);
+	return maxNum;
+}
+
+
+int maxGap(vector<int> &arr)
+{
+	if (arr.size() <= 1)
+		return 0;
+	int maxgap = -1;
+	int maxnum = -1;
+	int minnum = -1;
+	int bucketlength = arr.size()+1;
+	int bid;
+	
+	vector<bool> hasNum(bucketlength, false);
+	vector<int> maxs(bucketlength);
+	vector<int> mins(bucketlength);
+	for (int i = 0; i < arr.size(); i++)  //找出数组中最大最小值
+	{
+		if (arr[i] > maxnum)
+			maxnum = arr[i];
+		if (arr[i] < minnum)
+			minnum = arr[i];
+	}
+	for (int i = 0; i < arr.size(); i++)
+	{
+		bid = (arr[i] - minnum)*arr.size() / (maxnum - minnum);  //确定每个数在哪一个桶
+		mins[bid] = hasNum[bid] ? min(mins[bid], arr[i]) : arr[i];
+		maxs[bid] = hasNum[bid] ? max(maxs[bid], arr[i]) : arr[i];
+		hasNum[bid] = true;
+	}
+	
+	int	lastMax = maxs[0];
+	for (int i = 1; i < bucketlength; i++)  //遍历每个非空桶，最大差值一定在两个相邻的非空桶中，用后一个非空桶的最小值减去前一个非空桶的最大值即可
+		if (hasNum[i])
+		{
+			maxgap = max(maxgap, mins[i] - lastMax);
+			lastMax = maxs[i];
+		}
+			
+	return maxgap;
+
+}
+
+int main()
+{
+	clock_t start, end;
+	start = clock();
+	long long sum1 = 0;
+	long long sum2 = 0;
+	bool succeed = true;
+	vector<int> p;
+	vector<int> p1;
+	vector<int> p2;
+
+	
+	
+
+	vector<int> a = { -5,-3,0,2,3};
+	
+	for (int i = 0; i < 10000; ++i)
+
+	{
+		p = generateRandomArray(100, 200);
+		p1 = copyArray(p);
+		p2 = copyArray(p);
+		
+	 	
+		cout << maxGap(a) << endl;
+		if (maxGap(p)!= rightMathod(p1))
+		{
+	    	succeed = false;
+			printArray(p2);
+			break;
+		}
+	}
+	string s = succeed ? "pass" : "false";
+	cout << s << endl;
+	end = clock();
+	double duration = ((double)(end - start)) / (CLK_TCK);
+	cout << "time:" << duration << endl;
+	return 0;
+}

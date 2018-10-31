@@ -1,0 +1,79 @@
+class queuetostack {
+
+public:
+	queuetostack() {};
+	~queuetostack() {};
+	void pop();
+	void push(int value);
+	int top();
+	bool empty() {
+		return data.empty();
+	}
+	void swap();
+private:
+	queue <int> data;
+	queue <int> help;
+
+};
+void queuetostack::swap()
+{
+	queue<int> t;
+	t = data;
+	data = help;
+	help = t;
+}
+void queuetostack::pop()
+{
+	if (data.empty())
+	{
+		cout << "no data" << endl;
+		return;
+	}
+	while (data.size() != 1)
+	{
+		help.push(data.front());
+		data.pop();
+	}
+	data.pop();
+	swap();
+}
+int queuetostack::top()
+{
+	int value;
+	if (data.empty())
+	{
+		cout << "no data" << endl;
+		throw - 1;
+
+	}
+	while (data.size() != 1)
+	{
+		help.push(data.front());
+		data.pop();
+	}
+	value = data.front();
+	help.push(data.front());
+	data.pop();
+	swap();
+	return value;
+}
+void queuetostack::push(int value)
+{
+	data.push(value);
+}
+int main()
+{
+	
+
+	queuetostack q;
+	q.push(2);
+	q.push(5);
+	q.push(3);
+	while (!q.empty())
+	{
+		cout << q.top() << " ";
+		q.pop();
+	}
+	cout << endl;
+	return 0;
+}

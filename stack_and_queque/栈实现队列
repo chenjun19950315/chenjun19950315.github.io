@@ -1,0 +1,67 @@
+class stacktoqueue {
+
+public:
+	stacktoqueue() {};
+	~stacktoqueue() {};
+	void pop();
+	void push(int value);
+	int front();
+	
+private:
+	stack <int> stackpush;
+	stack <int> stackpop;
+};
+void stacktoqueue::push(int value)
+{
+	stackpush.push(value);
+}
+void stacktoqueue::pop()
+{
+	if (stackpop.empty())
+	{
+		while (!stackpush.empty())
+		{
+			stackpop.push(stackpush.top());
+			stackpush.pop();
+		}
+	}
+	if (stackpop.empty())
+		throw - 1;
+	else
+		stackpop.pop();
+}
+int stacktoqueue::front()
+{
+	int value;
+	if (stackpop.empty())
+	{
+		while (!stackpush.empty())
+		{
+			stackpop.push(stackpush.top());
+			stackpush.pop();
+		}
+	}
+	if (stackpop.empty())
+		throw - 1;
+	else
+	{
+		value = stackpop.top();
+		stackpop.pop();
+		return value;
+	}
+}
+
+int main()
+{
+	stacktoqueue q;
+	q.push(3); q.push(7); q.push(5);
+	cout << q.front() << endl;
+	cout << q.front() << endl;
+	q.push(19);
+	cout << q.front() << endl;
+	cout << q.front() << endl;
+	
+
+
+	return 0;
+}

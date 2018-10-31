@@ -1,0 +1,43 @@
+//转圈打印数组
+void printEdge(vector<vector<int>> &num, int tr, int tc, int br, int bc)
+{
+	if (tr == br) {
+		for (int i = tc; i <= bc; i++)
+			cout << num[tr][i] << endl;
+	}
+	else if (tc == bc) {
+		for (int i = tr; i <= br; i++)
+			cout << num[i][tc] << endl;
+	}
+	else {
+		int currow = tr;
+		int curcol = tc;
+		while (curcol != bc)
+			cout << num[currow][curcol++] << endl;
+		while (currow != br)
+			cout << num[currow++][curcol] << endl;
+		while(curcol!=tc)
+			cout << num[currow][curcol--] << endl;
+		while (currow != tr)
+			cout << num[currow--][curcol] << endl;
+	}
+}
+void printTransh(vector<vector<int>> num)
+{
+	int tr = 0;
+	int tc = 0;
+	int br = num.size() - 1;
+	int bc = num[0].size() - 1;
+	while (tr <= br &&tc <= bc)
+		printEdge(num, tr++, tc++, br--, bc--);
+
+}
+int main()
+{
+	vector<vector<int>> p = { {1,2,3},{4,5,6} ,{7,8,9},{10,11,12} };
+	printTransh(p);
+	
+
+
+	return 0;
+}

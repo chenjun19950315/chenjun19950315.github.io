@@ -1,0 +1,79 @@
+//思路:设置两个指针，一个快的指针和一个慢的指针，快的指针指向最后，慢的指针指向中间位置，如果是偶数指向中间偏前的位置
+//翻转后半段指针，然后逐个元素比较，最后再将后半段翻转回来， 如果链表长度为N，时间复杂度达到O(N)，额外空间复杂，这样就不需要额外的空间复杂度
+度达到O(1)。
+void reverse(LinkList head1, LinkList slow)
+{
+
+	LinkList q = nullptr;
+	LinkList p = head1->next;
+	LinkList pr = head1->next;
+	while (p != slow)
+	{
+		pr = p->next;
+		p->next = q;
+		q = p;
+		p = pr;
+	}
+	slow->next = q;
+}
+bool isPalindrome1(LinkList head)
+{
+	LinkList quick = head;
+	LinkList slow = head;
+	//设置一个快的指针和一个慢的指针，快的指针指向最后，慢的指针指向中间位置，如果是偶数指向中间偏前的位置
+	while (quick->next != nullptr &&quick->next->next != nullptr)
+	{
+		quick = quick->next->next;
+		slow = slow->next;
+	}
+	if (quick->next != nullptr)
+	{
+		quick = quick->next;
+		slow = slow->next;
+	}
+	//将单链表后半段逆序
+	LinkList head1=new Node;
+	LinkList q = nullptr;
+	LinkList p = slow;
+	LinkList pr = slow;
+	while (p!= nullptr)
+	{
+		pr = p->next;
+		p->next = q;
+		q = p;
+		p = pr;
+	}
+	head1->next = q;
+	
+	//当只要有一个链表结束则结束
+	LinkList s1 = head;
+	LinkList s2 = head1;
+	while (s1->next != nullptr && s2->next != nullptr)
+	{
+		s1 = s1->next;
+		s2 = s2->next;
+		if (s1->data != s2->data)
+		{
+			//结束的时候将链表后半段翻转回来
+			reverse(head1, slow);
+			return false;
+		}
+	}
+	reverse(head1, slow);
+	return true;
+}
+int main()
+{
+	LinkList head = new Node;
+	
+	
+	InitList(head);
+	
+	CreateFromTail(head);
+	
+	
+	cout << isPalindrome1(head) << endl;
+	DisplayList(head);
+
+	return 0;
+}

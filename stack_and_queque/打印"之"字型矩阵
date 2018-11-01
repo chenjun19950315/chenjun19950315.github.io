@@ -5,7 +5,7 @@
 //8，12
 //【要求】 额外空间复杂度为O(1)。
 void printDiaonal(vector<vector<int>> &arr,int a[2], int b[2], bool direction)
-{
+{        //给出对角线上的两个点，打印对角线上的元素
 	if (direction)
 	{
 		int i = a[0];
@@ -29,17 +29,20 @@ void printMatrixZigZag(vector<vector<int>> &arr)
 	
 	int a[2] = { 0,0 };
 	int b[2] = { 0,0 };
+	//当a点到达最底部的时候结束
 	while (a[0] != row + 1) {
 		printDiaonal(arr,a, b, direction);
-		
+		//对于a点，左移一格，当到达最左时,下移一格
 		if (a[1] != col )
 			a[1]++;
 		else
 			a[0]++;
+	//对于b点，下移一格，到达最下则右移一格
 		if (b[0] != row )
 			b[0]++;
 		else
 			b[1]++;
+	//控制打印的方向
 		direction = !direction;
 
 	}

@@ -1,0 +1,27 @@
+LinkList listRerverse(LinkList head)
+{
+	if (head->next == nullptr)
+		throw - 1;
+	LinkList q, q1;
+	LinkList p = nullptr;
+	q = head->next;
+	while (q!= nullptr)
+	{
+		q1 = q->next;
+		q->next = p;
+		p = q;
+		q = q1;
+	}
+	head->next = p;
+	return head;
+
+}
+int main()
+{
+	LinkList head1 = new Node;
+	InitList(head1);
+	DisplayList(head1);
+	head1 = listRerverse(head1);
+	DisplayList(head1);
+	return 0;
+}

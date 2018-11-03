@@ -1,0 +1,62 @@
+//将单向链表按某值划分成左边小、中间相等、右边大的形式
+//【题目】 给定一个单向链表的头节点head，节点的值类型是整型，再给定一个
+//整 数pivot。实现一个调整链表的函数，将链表调整为左部分都是值小于 pivot
+//的节点，中间部分都是值等于pivot的节点，右部分都是值大于 pivot的节点。
+//除这个要求外，对调整后的节点顺序没有更多的要求。 例如：链表9->0->4->5-
+//>1，pivot=3。 调整后链表可以是1->0->4->9->5，也可以是0->1->9->5->4。总
+//之，满 足左部分都是小于3的节点，中间部分都是等于3的节点（本例中这个部
+//分为空），右部分都是大于3的节点即可。对某部分内部的节点顺序不做要求。
+//思路：将链表中的数据保存在一个数组中，然后对数组进行荷兰国旗排序，在将原链表的数据替换
+void partition(char str[], char pivot,int length)
+{
+	int less = -1;
+	int more = length + 1;
+	int cur = 0;
+	while (cur < more)
+	{
+		if (str[cur] == pivot)
+			cur++;
+		else if (str[cur] < pivot)
+			swap(str[cur++] , str[++less]);
+		else
+			swap(str[--more],str[cur])  ;
+	}
+}
+void listPartition1(LinkList head,char pivot)
+{
+	char str[100];//用一个数组来保存链表的元素，然后对元素进行荷兰国旗问题的排序，然后再将链表串起来
+	int length = 0;
+	LinkList p = head;
+	while (p->next != nullptr)
+	{
+		p = p->next;
+		str[length++] = p->data;
+	}
+	partition(str, pivot, length - 1);//对数组进行荷兰国旗排序
+	p = head;
+	int i = 0;
+	while (p->next != nullptr)//替换原链表的数据即可
+	{
+		p = p->next;
+		p->data = str[i++];
+		
+	}
+	
+	
+}
+
+int main()
+{
+	LinkList head = new Node;
+	
+	
+	InitList(head);
+	
+	CreateFromTail(head);
+	listPartition1(head, '3');
+	
+	
+	DisplayList(head);
+
+	return 0;
+}

@@ -1,0 +1,110 @@
+//优化要求:在原问题的要求之上再增加如下两个要求。
+//在左、中、右三个部分的内部也做顺序要求，要求每部分里的节点从左 到右的
+//顺序与原链表中节点的先后次序一致。 例如：链表9->0->4->5->1，pivot=3。
+//调整后的链表是0->1->9->4->5。 在满足原问题要求的同时，左部分节点从左到
+//右为0、1。在原链表中也 是先出现0，后出现1；中间部分在本例中为空，不再
+//讨论；右部分节点 从左到右为9、4、5。在原链表中也是先出现9，然后出现4，
+//最后出现5。
+//如果链表长度为N，时间复杂度请达到O(N)，额外空间复杂度请达到O(1)。
+
+
+//思路:设置三个链表，分别是小于，等于，大于pivot的链表，遍历整个链表，形成这三个小链表，最后串起这三个链表
+void listPartition2(LinkList head, char pivot)
+{
+	LinkList sH = nullptr;   //小于pivot的链表头
+	LinkList sT = nullptr;//小于pivot的链表尾
+	LinkList qH = nullptr;   //等于pivot的链表头
+	LinkList qT = nullptr;//等于pivot的链表尾
+	LinkList bH = nullptr;   //大于pivot的链表头
+	LinkList bT = nullptr;//大于pivot的链表尾
+	LinkList p = head;
+	//遍历整个链表，形成这三个小链表
+	while (p->next != nullptr)
+	{
+		p = p->next;
+		if (p->data < pivot) {
+			if (sH == nullptr) {
+				sH = p;
+				sT = p;
+			}
+			else {
+				sT->next = p;
+				sT = p;
+			}
+		}
+
+		else if (p->data == pivot) {
+			if (qH == nullptr) {
+				qH = p;
+				qT = p;
+			}
+			else {
+				qT->next = p;
+				qT = p;
+			}
+		}
+		else
+		{
+			if (bH == nullptr) {
+				bH = p;
+				bT = p;
+			}
+			else {
+				bT->next = p;
+				bT = p;
+			}
+		}
+	}
+	//给链表最后加结束符，如果大于的链表有数，则加在大于链表，否在判断等于的链表是否为空，不为空加在等于的链表末位，为空则判断小于的链表是否
+	//为空，不为空则加在小于链表的末位
+
+	if (bT != nullptr)
+		bT->next = nullptr;
+	else {
+		if (qT != nullptr)
+			qT->next = nullptr;
+		else
+			if (sT != nullptr)
+				sT->next = nullptr;
+	}
+	
+	//将三个链表串起来，注意链表为空的状态
+	if (sH != nullptr)
+	{
+		head->next = sH;
+		if (qH != nullptr)
+		{
+			sT->next = qH;
+			if (bH != nullptr)
+				qT->next = bH;
+		}
+		else {
+			if (bH != nullptr)
+				sT->next = bH;
+		}
+	}
+	else {
+		if (qH != nullptr)
+		{
+			head->next = qH;
+			if (bH != nullptr)
+				qT->next = bH;
+		}
+		else {
+			if (bH != nullptr)
+				head->next = bH;
+		}
+	}
+
+
+}
+	
+int main()
+{
+	LinkList head = new Node;
+	InitList(head);
+	CreateFromTail(head);
+	listPartition2(head, '3');
+	DisplayList(head);
+	return 0;
+}

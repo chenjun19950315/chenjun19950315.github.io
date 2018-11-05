@@ -1,0 +1,26 @@
+//详细解析:https://www.cnblogs.com/dancingrain/p/3405197.html
+LinkList isRing(LinkList head)
+{
+	if (head == nullptr || head->next == nullptr || head->next->next == nullptr)
+		return nullptr;
+	LinkList slow = head->next;
+	LinkList fast = head->next->next;
+	while (fast !=  slow)
+	{
+
+		if (fast->next != nullptr && fast->next->next != nullptr)
+		{
+			slow = slow->next;
+			fast = fast->next->next;
+		}
+		else
+			return nullptr;
+	}
+	fast = head;
+	while (fast != slow)
+	{
+		fast = fast->next;
+		slow = slow->next;
+	}
+	return fast;
+}

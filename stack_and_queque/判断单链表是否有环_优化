@@ -24,3 +24,166 @@ LinkList isRing(LinkList head)
 	}
 	return fast;
 }
+//返回环的长度，只需要两个指针指向环的入口，移动一个指针知道两指针相遇，记录长度
+int ringLength(LinkList head)
+{
+	if (isRing(head) == nullptr)
+		return 0;
+	else {
+		int length = 1;
+		LinkList p = isRing(head);
+		if (p->next == p)
+			return 1;
+		LinkList p1 = p->next;
+		while (p1 != p)
+		{
+			p1 = p1->next;
+			length++;
+
+		}
+		return length;
+
+	}
+}
+//返回整个链表的长度，即环的长度加上，头结点到环的距离
+int allRingLength(LinkList head)
+{
+	int allLength = 0;
+	if (isRing(head) == nullptr)
+	{
+		LinkList p = head;
+		while (p->next != nullptr)
+		{
+			p = p->next;
+			allLength++;
+		}
+		return allLength;
+	}
+
+	else {
+		LinkList p=head ;
+		LinkList p1 = isRing(head);
+		while (p->next != p1)
+		{
+			p = p->next;
+			allLength++;
+		}
+		allLength = ringLength(head) + allLength;
+		return allLength;
+	}
+}
+
+//完整可运行的代码
+void CreateRingList(LinkList h)
+{
+	char data;
+	int flag = 1;
+	Node *s;
+	Node *r;
+	r = h;
+
+	while (flag)
+	{
+		cin >> data;
+		if (data != '$')
+		{
+			s = new Node;
+			s->data = data;
+			r->next = s;
+			r = s;
+
+		}
+		else
+		{
+			flag = 0;
+			r->next = h->next;
+		}
+	}
+}
+//判断单链表是否有环，输入单链表头结点，如果没有返回nullptr，如果有返回第一个环节点
+//思路:只需要用set（哈希函数)保存,链表中的节点，遍历链表的时候如果发现有重复的值，则该点就是环节点，否则直到链表尾都没有重复，则说明没有环
+LinkList isRing(LinkList head)
+{
+	if (head == nullptr || head->next == nullptr || head->next->next == nullptr)
+		return nullptr;
+	LinkList slow = head->next;
+	LinkList fast = head->next->next;
+	while (fast !=  slow)
+	{
+
+		if (fast->next != nullptr && fast->next->next != nullptr)
+		{
+			slow = slow->next;
+			fast = fast->next->next;
+		}
+		else
+			return nullptr;
+	}
+	fast = head;
+	while (fast != slow)
+	{
+		fast = fast->next;
+		slow = slow->next;
+	}
+	return fast;
+}
+int ringLength(LinkList head)
+{
+	if (isRing(head) == nullptr)
+		return 0;
+	else {
+		int length = 1;
+		LinkList p = isRing(head);
+		if (p->next == p)
+			return 1;
+		LinkList p1 = p->next;
+		while (p1 != p)
+		{
+			p1 = p1->next;
+			length++;
+
+		}
+		return length;
+
+	}
+}
+int allRingLength(LinkList head)
+{
+	int allLength = 0;
+	if (isRing(head) == nullptr)
+	{
+		LinkList p = head;
+		while (p->next != nullptr)
+		{
+			p = p->next;
+			allLength++;
+		}
+		return allLength;
+	}
+
+	else {
+		LinkList p=head ;
+		LinkList p1 = isRing(head);
+		while (p->next != p1)
+		{
+			p = p->next;
+			allLength++;
+		}
+		allLength = ringLength(head) + allLength;
+		return allLength;
+	}
+}
+int main()
+{
+	LinkList head = new Node;
+	InitList(head);
+	CreateRingList(head);
+	
+
+	if (isRing(head) == nullptr)
+		cout << "no ring: " << endl;
+	else
+		cout << isRing(head)->data<< endl;
+	cout << allRingLength(head) << endl;
+	return 0;
+}

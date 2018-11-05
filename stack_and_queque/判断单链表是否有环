@@ -1,0 +1,16 @@
+//判断单链表是否有环，输入单链表头结点，如果没有返回nullptr，如果有返回第一个环节点
+//思路:只需要用set（哈希函数)保存,链表中的节点，遍历链表的时候如果发现有重复的值，则该点就是环节点，否则直到链表尾都没有重复，则说明没有环
+LinkList isRing(LinkList head)
+{
+	LinkList p = head;
+	set<LinkList> s;
+	while (p->next != nullptr)
+	{
+		p = p->next;
+		if (s.find(p) != s.end())
+			return p;
+		else
+			s.insert(p);
+	}
+	return nullptr;
+}

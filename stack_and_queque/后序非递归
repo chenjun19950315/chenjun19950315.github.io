@@ -3,7 +3,7 @@
 
 //同理我们可以打印根右左的的顺序，压入根节点，在压入左子树和右子树，就可以输出根右左的顺序，我们再用一个栈，保存根右左的
 //顺序，即可变成左右根
-void preOrderUnRecur(BinTree bt)
+void posOrderUnRecur(BinTree bt)
 {
 	stack<BinTree> s;
 	stack<BinTree> t;
@@ -33,6 +33,6 @@ int main()
 {
 	BinTree BT =createBinTree();
 	LevelorderTraversal(BT);
-	preOrderUnRecur(BT);
+	posOrderUnRecur(BT);
 	return 0;
 }

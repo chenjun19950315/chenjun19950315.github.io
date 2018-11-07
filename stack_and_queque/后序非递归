@@ -1,0 +1,38 @@
+//后序遍历的非递归方式
+//后序遍历是左右根，但前序是根左右， 我们是，只需在栈中压入头结点，，弹出，并压入其右子树和左子树，就可以输出根左右的顺序
+
+//同理我们可以打印根右左的的顺序，压入根节点，在压入左子树和右子树，就可以输出根右左的顺序，我们再用一个栈，保存根右左的
+//顺序，即可变成左右根
+void preOrderUnRecur(BinTree bt)
+{
+	stack<BinTree> s;
+	stack<BinTree> t;
+	if (bt != nullptr)
+	{
+		s.push(bt);
+		while (!s.empty())
+		{
+			bt = s.top();
+			s.pop();
+		//	cout << bt->data << " ";
+			t.push(bt);
+		    
+			if (bt->left != nullptr)
+				s.push(bt->left);
+			if (bt->right != nullptr)
+				s.push(bt->right);
+		}
+		while (!t.empty())
+		{
+			cout << t.top()->data << " ";
+			t.pop();
+		}
+	}
+}
+int main()
+{
+	BinTree BT =createBinTree();
+	LevelorderTraversal(BT);
+	preOrderUnRecur(BT);
+	return 0;
+}

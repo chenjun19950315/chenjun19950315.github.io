@@ -1,0 +1,27 @@
+//先序遍历的非递归方式
+//先序遍历是根左右，只需在栈中压入头结点，，弹出，并压入其右子树和左子树，就可以输出根左右的顺序
+void preOrderUnRecur(BinTree bt)
+{
+	stack<BinTree> s;
+	if (bt != nullptr)
+	{
+		s.push(bt);
+		while (!s.empty())
+		{
+			bt = s.top();
+			s.pop();
+			cout << bt->data << " ";
+			if (bt->right != nullptr)
+				s.push(bt->right);
+			if (bt->left != nullptr)
+				s.push(bt->left);
+		}
+	}
+}
+int main()
+{
+	BinTree BT =createBinTree();
+	LevelorderTraversal(BT);
+	preOrderUnRecur(BT);
+	return 0;
+}

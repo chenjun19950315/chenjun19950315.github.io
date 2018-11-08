@@ -1,1 +1,48 @@
+//寻找后继节点优化版本，不需要遍历整个二叉树，只需要遍历很少几个节点
+//视频：5，1:06:,思路:根据后继的性质分为两种情况，情况一:如果该节点有右子树，则该右子树的最左节点
+//情况二:如果该节点没有右子树，则寻找离其最近的父节点（该节点是在父节点的左子树上）
+BinTree1 findSuccessorNode1(BinTree1 bt)
+{
+	BinTree1 root = bt;
+	if (bt == nullptr)
+		return nullptr;
+	//情况一
+	if (bt->right != nullptr)
+	{
+		bt = bt->right;
+		while (bt->left != nullptr)
+			bt = bt->left;
+		return bt;
+	}
+	//情况二
+	else {
+		while (bt->parent != nullptr)
+		{
+			root = bt->parent;
+			if (root->left == bt)
+				return root;
+			else
+				bt = root;
+		}
+		return nullptr;
+	}
+	
+	//找到父节点
+	while (root->parent != nullptr)
+		root = root->parent;
+	//根据父节点和当前节点寻找后继节点
+	return orderTraversal_find(root, bt);
 
+}
+int main()
+{
+	BinTree1 BT = createBinTree1();
+	BinTree1 b = BT;
+
+	if (findSuccessorNode1(b) == nullptr)
+		cout << "no successor:" << endl;
+	else
+		cout << "successor is :" << findSuccessorNode1(b)->data << endl;
+
+	return 0;
+}

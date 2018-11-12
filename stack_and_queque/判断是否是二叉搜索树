@@ -1,0 +1,35 @@
+//判断是否为搜素二叉树，搜素二叉树的中序遍历一定是升序
+bool isSearchTree(BinTree bt)
+{
+
+	stack<BinTree> s;
+	TreeElementType t=-100000;//设定一个最小值，因为树结构的数据为int型
+	while (!s.empty() || bt)
+	{
+		
+		while (bt!= nullptr)
+		{
+			s.push(bt);
+			bt = bt->left;
+		}
+		bt = s.top();
+		s.pop();
+		if (t < bt->data)//判断前一个数是否小于当前数，只要有一个不小于则不是二叉搜索树
+			t = bt->data;
+		else
+			return false;
+		
+		bt = bt->right;
+	}
+	return true;//否则是二叉搜索树
+}
+int main()
+{
+	
+
+	BinTree BT = createBinTree();
+	int height;
+	cout << isSearchTree(BT) << endl;
+	
+	return 0;
+}

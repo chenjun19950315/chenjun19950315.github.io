@@ -1,0 +1,35 @@
+bool isBalance(BinTree bt,int& height)
+{
+	if (bt == nullptr)
+	{
+		height = 0;
+		return true;
+	}
+	int lh;
+	int rh;
+	bool lB;
+	bool rB;
+	lB = isBalance(bt->left, lh);
+	rB = isBalance(bt->right, rh);
+	if (lB && rB && abs(lh - rh) <= 1)
+	{
+		height = max(lh, rh) + 1;
+		return true;
+	}
+	else
+	{
+		height = max(lh, rh) + 1;
+		return false;
+	}
+
+}
+int main()
+{
+	
+
+	BinTree BT = createBinTree();
+	int height;
+	cout << isBalance(BT, height) << endl;
+	cout << height << endl;
+	return 0;
+}

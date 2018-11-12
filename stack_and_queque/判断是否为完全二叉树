@@ -1,0 +1,55 @@
+//判断是否为完全二叉树，四种情况，1.如果左子树不为空和右子树不为空，数据压入队列继续
+//2、如果左子树为空和右子树不为空，错误，3.如果左子树不为空和右子树为空，左子树如队列，进入另一个阶段，该阶段为
+//剩下的节点只能为叶子节点，4.//如果左子树为空和右子树为空，进入另一个阶段，该阶段为剩下的节点只能为叶子节点
+bool isCompleteTree(BinTree bt)
+{
+	BinTree p;
+	bool stage = false;
+	if (bt == nullptr)
+		return true;
+	queue<BinTree> q;
+	q.push(bt);
+	while (!q.empty())
+	{
+		if (stage == false) {
+			p = q.front();
+			q.pop();
+			if (p->left != nullptr && p->right != nullptr)  //如果左子树不为空和右子树不为空，继续
+			{
+				q.push(p->left);
+				q.push(p->right);
+				continue;
+			}
+			else if (p->left == nullptr && p->right != nullptr)//如果左子树为空和右子树不为空，错误
+				return false;
+			else if (p->left != nullptr && p->right == nullptr)//如果左子树不为空和右子树为空，进入另一个阶段，该阶段为
+			//剩下的节点只能为叶子节点
+			{
+				q.push(p->left);
+				stage = true;
+			}
+			else   //如果左子树为空和右子树为空，进入另一个阶段，该阶段为
+				//剩下的节点只能为叶子节点
+				stage = true;
+		}
+		else {   //进入另一个阶段，判断剩余的是否为叶子节点
+			p = q.front();
+			q.pop();
+			if (p->left != nullptr || p->right != nullptr)
+				return false;
+		}
+
+	}
+	return true;
+	
+}
+int main()
+{
+	
+
+	BinTree BT = createBinTree();
+	int height;
+	cout << isCompleteTree(BT) << endl;
+	
+	return 0;
+}

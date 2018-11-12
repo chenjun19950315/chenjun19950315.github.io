@@ -1,0 +1,48 @@
+
+//已知一棵完全二叉树，求其节点的个数
+//要求：时间复杂度低于O(N)，N为这棵树的节点个数
+//思路:根据完全二叉树的特点，加速计算的过程，通过遍历最左的子树可以得到树的高度，遍历根节点的右子树的最左子树，可以判断
+//根节点的左子树是否为满二叉树，如果为满二叉树，则计算出根节点的左子树的个数，并遍历根节点的右子树
+//如果不是，则根节点的右子树为满二叉树，计算出个数，并遍历根节点的左子树
+int completeTreeNum(BinTree bt)
+{
+	if (bt == nullptr||bt->left==nullptr) //如果是叶子节点返回1
+		return 1;
+	if (bt->right == nullptr)  //如果只有右子树返回2
+		return 2;
+	int sum = 0;
+	BinTree p = bt;
+	int lh=0;//记录最左子树的高度
+	int rh=1;//记录根节点的右子树的最左子树的高度
+	while (p != nullptr)
+	{
+		lh++;
+		p = p->left;
+	}
+	p = bt->right;
+	
+	while (p != nullptr)
+	{
+		rh++;
+		p = p->left;
+	}
+	
+	if (lh > rh)
+	{
+		sum = sum + pow(2, rh-1);
+		sum += completeTreeNum(bt->left);
+	}
+	else if (lh == rh)
+	{
+		sum = sum + pow(2, lh-1) ;
+		sum += completeTreeNum(bt->right);
+	}
+	return sum;
+}
+int main()
+{
+	BinTree BT = createBinTree();
+	int height;
+	cout << completeTreeNum(BT) << endl;
+	return 0;
+}

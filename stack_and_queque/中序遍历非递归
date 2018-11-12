@@ -1,0 +1,31 @@
+void InorderNoTraverse(BinTree bt)  
+{
+
+	stack<BinTree> s;
+	while (!s.empty() || bt)
+	{
+		
+		while (bt!= nullptr)  //一直压入其左节点
+		{
+			s.push(bt);
+			bt = bt->left;
+		}
+		bt = s.top();   //弹出根节点，然后继续对其右子树进行同样的操作
+    
+		s.pop();
+		cout << bt->data << " ";
+		bt = bt->right;
+
+
+	}
+}
+int main()
+{
+	
+
+	BinTree BT = createBinTree();
+	int height;
+	InorderNoTraverse(BT);
+	
+	return 0;
+}

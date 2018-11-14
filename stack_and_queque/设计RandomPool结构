@@ -1,0 +1,65 @@
+//设计RandomPool结构
+//【题目】 设计一种结构，在该结构中有如下三个功能：
+//insert(key)：将某个key加入到该结构，做到不重复加入。
+//delete(key)：将原本在结构中的某个key移除。 getRandom()：
+//等概率随机返回结构中的任何一个key。
+//【要求】 Insert、delete和getRandom方法的时间复杂度都是O(1)
+//设计两个map，一个保存key到有序数字的map,一个从有序数字到key，左神算法初级班6
+class RandomPool
+{
+public:
+	RandomPool(int s) :size(s){};
+	RandomPool() = default;
+	~RandomPool()=default;
+	void insert(string s);
+	string randomGet();
+	void deletePool(string s);
+	void display() {
+		for (const auto&c : m1)
+			cout << c.first << " " << c.second << endl;
+		for (const auto&c : m2)
+			cout << c.first << " " << c.second << endl;
+
+	}
+private:
+	int size=0;
+	map<string, int> m1;
+	map<int, string> m2;
+};
+void RandomPool::insert(string s)
+{
+	
+	m1.insert({s,size});
+	m2.insert({ size,s });
+	size++;
+}
+//删除的时候需要将最后一个有序数字对应的key,放到删除的key中的有序数字
+void RandomPool::deletePool(string s)
+{
+	int n = m1[s];
+	size--;
+	m2[n] = m2[size];
+	m1[s] = size;
+	
+}
+string  RandomPool::randomGet()
+{
+	uniform_int_distribution<unsigned> u1(0, size-1);
+	default_random_engine e(time(0));
+	int n = u1(e);
+
+	string s = m2[n];
+	return s;
+}
+
+
+int main()
+{
+	RandomPool p(0);
+	p.insert("zuo");
+	p.insert("cj");
+	p.insert("dl");
+	p.deletePool("zuo");
+	
+	cout << p.randomGet() << endl;
+}

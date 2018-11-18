@@ -1,0 +1,49 @@
+一个矩阵中只有0和1两种值，每个位置都可以和自己的上、下、左、右
+四个位置相连，如果有一片1连在一起，这个部分叫做一个岛，求一个
+矩阵中有多少个岛？
+举例：
+0 0 1 0 1 0
+1 1 1 0 1 0
+1 0 0 1 0 0
+0 0 0 0 0 0
+这个矩阵中有三个岛。
+void inFect(vector<vector<int>>& num, int col, int row, int h, int w)
+{
+	//如果坐标超出范围，和当前值不是小岛时，停止感染
+	if (col < 0 || col >= h || row < 0 || row >= w || num[col][row] != 1)
+		return;
+	num[col][row] = 2;  //将感染区域标记为2
+	inFect(num, col-1, row, h, w);
+	inFect(num, col+1, row, h, w);
+	inFect(num, col, row-1, h, w);
+	inFect(num, col, row+1, h, w);
+}
+int isLand(vector<vector<int>>& num)
+{
+	if (num.size() == 0)
+		return -1;
+	int count = 0;
+	int h = num.size();
+	int w = num[0].size();
+	//遍历每一个数
+	for (int i = 0; i < h; i++)
+		for (int j = 0; j < w; j++)
+			if (num[i][j] == 1)
+			{
+				++count;
+				inFect(num, i, j, h, w);
+			}
+	return  count;
+}
+
+int main()
+{
+
+	vector<vector<int>> num;
+	vector<int> t;
+	num.push_back({ 1,0,1,1,0,1 });
+	num.push_back({ 0,0,1,0,0,0 });
+	num.push_back({ 1,1,1,0,1,0 });
+	num.push_back({ 0,0,0,1,1,0 });
+	cout << isLand(num) << endl;
+}

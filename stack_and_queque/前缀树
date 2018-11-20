@@ -1,0 +1,125 @@
+struct TrieNode {
+	int path;
+	int end;
+	TrieNode* nexts[26];  //假设只有26个字符，每个数组代表一条路径，如果不为空则表示联通
+	TrieNode()
+	{
+		path = 0;//表示经过该字符的个数
+		end = 0;		//表示以该字符为结尾的个数
+		memset(nexts, 0, sizeof(nexts));  //初始化为空
+	}
+
+};
+class Trie {
+public:
+	Trie()
+	{
+		root = new TrieNode();
+	}
+	void insertString(string &s);//在前缀树上插入字符串,
+	void deleteString(string &s);//在前缀树上删除字符串
+	int searth(string &s);//查找有多少个与s一样的字符串，只需要返回end
+	int preSearth(string &s);//查找有多少个前缀是s的字符串，只需要返回path
+private:
+	TrieNode* root;
+};
+void Trie::insertString(string &s)
+{
+	if (s.length()==0)
+		return ;
+	int idex;
+	TrieNode* node =root;
+	
+	
+	for(int i=0;i<s.length();i++)
+	{
+		idex = s[i] - 'a';
+		if (node->nexts[idex] == nullptr)
+		{
+			node->nexts[idex] = new TrieNode();
+		}
+		node = node->nexts[idex];
+		node->path++;
+	}
+	node->end++;
+	
+}
+void Trie::deleteString(string &s)
+{
+	if (s.length() == 0 || searth(s) == 0)
+		return;
+	
+	int idex;
+	TrieNode* node = root;
+	TrieNode* t = root;
+
+	for (int i = 0; i<s.length(); i++)
+	{
+		idex = s[i] - 'a';
+		if(--node->nexts[idex]->path ==0 )
+		{
+			t = node->nexts[idex];
+			delete t;                   
+			node->nexts[idex] = nullptr;
+			return;
+
+		}
+		node = node->nexts[idex];
+	}
+	node->end--;
+}
+int Trie::searth(string &s)
+{
+	if (s.length() == 0)
+		return 0;
+	int idex;
+	TrieNode* node = root;
+
+	for (int i = 0; i<s.length(); i++)
+	{
+		idex = s[i] - 'a';
+		if (node->nexts[idex] == nullptr)
+		{
+			return 0;
+		}
+		node = node->nexts[idex];
+		
+	}
+	return node->end;
+}
+int Trie::preSearth(string &s)
+{
+	if (s.length() == 0)
+		return 0;
+	int idex;
+	TrieNode* node = root;
+
+	for (int i = 0; i<s.length(); i++)
+	{
+		idex = s[i] - 'a';
+		if (node->nexts[idex] == nullptr)
+		{
+			return 0;
+		}
+		node = node->nexts[idex];
+
+	}
+	return node->path;
+}
+int main()
+{
+
+	
+	Trie t;
+	t.insertString(string("abc"));
+	t.insertString(string("abc"));
+	t.insertString(string("abd"));
+	t.insertString(string("ad"));
+	t.insertString(string("be"));
+	cout << t.preSearth(string("ab")) << endl;
+	t.deleteString(string("abc"));
+	t.deleteString(string("abc"));
+	cout << t.preSearth(string("ab")) << endl;
+	cout << t.searth(string("abc")) << endl;
+	return 0;
+}

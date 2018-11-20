@@ -1,0 +1,20 @@
+//给定一个字符串类型的数组strs，找到一种拼接方式，使得把所
+//有字 符串拼起来之后形成的字符串具有最低的字典序。
+bool com(string s1, string s2)
+{
+	return s1 + s2 < s2 + s1;    //只需要返回两个字符串和最小的顺序
+}
+string lowerstString(vector<string> s)
+{
+	sort(s.begin(), s.end(), com);
+	string result="";
+	for (auto it = s.begin(); it != s.end(); it++)
+		result += *it;                   //将排好序的字符串加起来
+	return result;
+}
+int main()
+{
+	vector<string> s{ "b","ba","acd","abc" };
+	cout << lowerstString(s) << endl;
+	return 0;
+}

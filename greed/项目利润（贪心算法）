@@ -1,0 +1,56 @@
+输入： 参数1，正数数组costs 参数2，正数数组profits 参数3，正数k 参数4，正数m
+costs[i]表示i号项目的花费 profits[i]表示i号项目在扣除花费之后还能挣到的钱(利润) k表示你不能并行、只能串行的最多做k个项目 m表示你初始的资金
+说明：你每做完一个项目，马上获得的收益，可以支持你去做下一个 项目。
+输出： 你最后获得的最大钱数
+--------------------- 
+作者：SUNbrightness 
+来源：CSDN 
+原文：https://blog.csdn.net/sunbrightness/article/details/79323057 
+版权声明：本文为博主原创文章，转载请附上博文链接！
+
+//costs表示每个项目的成本，profits表示每个项目的利润，k表示可以做多少个项目，money表示一开始的资本
+//思路:建立两个优先级队列，一个为所有项目，按项目成本升序的方式排序，另一个为最大利润的优先级队列 ,表示满足你可以投资的
+//项目中选出利润最大的，左神基础班8,30:00
+int maxProfit(vector<int> &costs, vector<int> &profits, int k, int money)
+{
+	int projectNum = costs.size();
+	priority_queue<Ipo, vector<Ipo>, cmp1> minCostQ;
+	priority_queue<Ipo, vector<Ipo>, cmp2> maxProfits;
+	Ipo p[1000];
+	for (size_t i = 0; i < projectNum; i++)
+	{
+		p[i].cost = costs[i];
+		p[i].profit = profits[i];
+		minCostQ.push(p[i]);
+	}
+	for (; k > 0; k--) {
+		while (!minCostQ.empty() && minCostQ.top().cost <= money)
+		{
+			maxProfits.push(minCostQ.top());
+			minCostQ.pop();
+		}
+		if (!maxProfits.empty())
+		{
+			money = money + maxProfits.top().profit;
+			maxProfits.pop();
+		}
+		else
+			return money;
+		
+	}
+		
+		return money;
+}
+
+
+
+
+int main()
+{
+	vector<int> costs = {2,3,10 };
+	vector<int> profit = { 1,2,3 };
+	int k = 2;
+	int m = 2;
+	cout << maxProfit(costs, profit, k, m) << endl;
+	return 0;
+}

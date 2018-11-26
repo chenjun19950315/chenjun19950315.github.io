@@ -1,0 +1,59 @@
+一些项目要占用一个会议室宣讲，会议室不能同时容纳两个项目
+的宣讲。 给你每一个项目开始的时间和结束的时间(给你一个数
+组，里面 是一个个具体的项目)，你来安排宣讲的日程，要求会
+议室进行 的宣讲的场次最多。返回这个最多的宣讲场次
+
+//思路:将所有项目的开会时间按结束时间排序，选出结束时间最短的会议，同时排除此会议期间其他会议无法进行的会议，直至结束
+class meeting
+{
+public:
+	meeting(int s=0, int e=0) :start(s), end(e) {};
+
+	~meeting() {};
+
+	int start;
+	int end;
+	
+};
+bool cmp1(meeting b1, meeting b2)
+{
+	return b1.end < b2.end;
+}
+//
+int bestArrange(vector<int> &start, vector<int> &end)
+{
+	int meetNum = start.size();
+	if (meetNum <= 0)
+		return 0;
+	vector<meeting> m;
+	meeting t;
+	int result = 0;
+	
+	for (size_t i = 0; i < meetNum; i++)
+	{
+		t.start = start[i];
+		t.end = end[i];
+		m.push_back(t);
+	}
+	sort(m.begin(), m.end(), cmp1);  //将所有项目的开会时间按结束时间排序
+	int cur = m[0].end;
+	result++;
+	for (size_t i = 1; i < meetNum; i++)
+	{
+		if (m[i].start <= cur)//排除此会议期间其他会议无法进行的会议
+			continue;
+		else
+		{
+			cur = m[i].end;
+			result++;
+		}
+	}
+	return result;
+}
+int main()
+{
+	vector<int> start{ 24, 3,5,10,19,21 };
+	vector<int> end{ 28 ,8,11,15,25,22};
+	cout << bestArrange(start, end) << endl;
+	return 0;
+}

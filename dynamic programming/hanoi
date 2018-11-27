@@ -1,0 +1,19 @@
+//汉诺塔问题，将三个塔num从from到to，通过help的帮助
+void hanoi(int num, string from, string to, string help)
+{
+	if (num == 1){
+		cout << num << " form:" << from << " to:" << to << endl;
+		return;
+	}
+	else {
+		hanoi(num - 1, from, help, to);
+		cout << num << " form:" << from << " to:" << to << endl;
+		hanoi(num - 1, help, to, from);
+	}
+}
+int main()
+{
+	hanoi(3, "zuo", "you", "zhong");
+
+	return 0;
+}

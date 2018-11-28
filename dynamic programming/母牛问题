@@ -1,0 +1,15 @@
+//母牛每年生一只母牛，新出生的母牛成长三年后也能每年生一只母牛，假设不会死。求N年后，母牛的数量。
+//当前年的牛的数量等于前一年牛的数量，加上可以生小牛的母牛的数量(即三年前的牛都可以生小牛)
+int cowNum(int num)
+{
+	if (num <= 4)
+		return num;
+	else
+		return cowNum(num - 1) + cowNum(num - 3);
+}
+int main()
+{
+	cout << cowNum(5) << endl;
+
+	return 0;
+}

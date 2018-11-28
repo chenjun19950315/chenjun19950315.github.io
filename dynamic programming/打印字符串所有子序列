@@ -1,0 +1,27 @@
+//打印一个字符串的全部子序列，包括空字符串
+//打印所有子字符串，
+void  allSusequece(string &s, int index, vector<string> &all)
+{
+	if (index >= s.size())//当索引值超过字符串大小结束
+		return;
+	vector<string> t;//保存这一次的新增字符串
+	for (auto &a : all)      
+		t.push_back(a + s[index]);  //每次选择加入当前字符，当不加入当前字符时，什么都不做即可，因为原本就存在
+	t.push_back(string("")+s[index]);//加上当前字符，
+	for (auto &a : t)//加入到最终结果
+	{
+		all.push_back(a);
+	}
+	allSusequece(s, ++index, all);//索引加一
+}
+int main()
+{
+	string s1 = "abc";
+	vector<string> s;
+	allSusequece(s1, 0, s);
+
+	for (auto c : s)
+		cout << c << endl;
+
+	return 0;
+}

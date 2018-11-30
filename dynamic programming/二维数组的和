@@ -1,0 +1,19 @@
+//题目:给你一个二维数组，二维数组中的每个数都是正数，要求从左上角走到右下角，每一步只能向右或者向下。沿途经过的数字要累加起来。
+//返回最小的路径和,考虑所有情况即可
+int minPathSum(const vector<vector<int>> &arr,int col,int row)
+{
+	if (col == arr.size()-1 && row == arr[0].size()-1)
+		return arr[col][row];
+	if (col == arr.size()-1)
+		return arr[col][row] + minPathSum(arr, col, row+1);
+	if (row == arr[0].size()-1)
+		return arr[col][row] + minPathSum(arr, col+1, row);
+	return (arr[col][row] + min(minPathSum(arr, col+1, row), minPathSum(arr, col, row+1)));
+
+}
+int main()
+{
+	vector<vector<int>> arr = { {3,2,1},{1,0,3},{5,2,1} };
+	cout << minPathSum(arr,0,0) << endl;
+	return 0;
+}

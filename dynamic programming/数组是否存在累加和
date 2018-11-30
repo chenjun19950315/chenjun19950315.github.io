@@ -2,7 +2,7 @@
 //暴力出所有结果，最后判断最终的结果中是否有与aim相等的数
 bool isSum(const vector<int>& arr, int pos, int sum, int aim)
 {
-	if (pos == arr.size() - 1)  
+	if (pos == arr.size() ) //注意不是size-1. 
 		return aim == sum;
 	return isSum(arr, pos + 1, sum, aim) || isSum(arr, pos + 1, sum + arr[pos], aim);
 }

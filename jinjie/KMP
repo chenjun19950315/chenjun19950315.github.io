@@ -33,7 +33,7 @@ vector<int> getNextArray1(const string& s)
 	int i = 2;
 	while (i<s.length()) {
 		if (s[cn] == s[i - 1]) {
-			next[i++] =cn++;
+			next[i++] =++cn;
 		}
 		else {
 			if (cn >0)

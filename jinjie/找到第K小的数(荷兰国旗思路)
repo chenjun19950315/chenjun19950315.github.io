@@ -1,0 +1,99 @@
+vector<int> generateRandomArray(int size, int value)
+{
+	uniform_int_distribution<unsigned> u1(0, size);
+	uniform_int_distribution<unsigned> u2(0, value);
+	default_random_engine e(time(0));
+	int n = u1(e);
+	vector<int> arr(n);
+	for (int i = 0; i < n; i++)
+		arr[i] = u2(e) - u2(e);
+	return arr;
+}
+vector<int> copyArray(vector<int> &old)
+{
+
+	vector<int> newArray(old.size());
+	for (int i = 0; i < old.size(); ++i)
+		newArray[i] = old[i];
+	return newArray;
+
+}
+
+void printArray(vector<int> arr)
+{
+	for (auto it = arr.begin(); it != arr.end(); it++)
+		cout << *it << " ";
+	cout << endl;
+}
+int rightMethod(vector<int> &arr,int k)
+{
+	sort(arr.begin(), arr.end());
+	return arr[k];
+}
+vector<int> patition(vector<int> &arr, int left, int right)
+{
+	uniform_int_distribution<unsigned> u(left, right);
+	default_random_engine e(time(0));
+	vector<int> result;
+	int num = arr[u(e)];
+	int less = left - 1;
+	int more = right+1 ;
+	int cur = left;
+	while (cur <more) {
+		if (arr[cur] < num)
+			swap(arr[++less] , arr[cur++]);
+		else if (arr[cur] == num)
+			cur++;
+		else
+			swap(arr[--more] ,arr[cur]);
+	}
+	result.push_back(less);
+	result.push_back(more);
+	return result;
+}
+//找到第K小的数,使用荷兰国旗思路，只要判断K是否在less和more中，如果在则表示第K小的数找到了，如果不在，则去更小的部分寻找，因为荷兰
+//国旗问题把数组分成两部分，小于num的部分和大于num的部分,如果等于部分的下标和K相等，说明等于部分的数就是要找的数，否则到less那一部分
+//继续找，如果是找大于K的数只需在改变patition的more和less的位置，
+//时间复杂度按概率学达到0（N）
+int findKValue(vector<int>& arr,int k,int left,int right)
+{
+	vector<int> result = patition(arr, left, right);
+	if (result[0]<k &&result[1]>k)  //如果等于部分的下标和K相等，说明等于部分的数就是要找的数，
+		return arr[result[0] + 1];
+	else
+		return findKValue(arr, k, left, result[0]);//否则到less那一部分继续找
+}
+int main()
+{
+
+	clock_t start, end;
+	start = clock();
+	long long sum1 = 0;
+	long long sum2 = 0;
+	bool succeed = true;
+	vector<int> p;
+	vector<int> p1;
+	
+
+	
+	
+	for (int i = 0; i < 10000; ++i)
+	{
+		p = generateRandomArray(100, 200);
+		p1 = copyArray(p);
+		cout << findKValue(p, 0, 0, p.size() - 1) << endl;
+		cout << rightMethod(p1, 0) << endl;
+
+		if (findKValue(p, 0, 0, p.size() - 1)!=rightMethod(p1, 0))
+		{
+			succeed = false;
+			break;
+		}
+	}
+	string s = succeed ? "pass" : "false";
+	cout << s << endl;
+	end = clock();
+	double duration = ((double)(end - start)) / (CLK_TCK);
+	cout << "time:" << duration << endl;
+	return 0;
+}

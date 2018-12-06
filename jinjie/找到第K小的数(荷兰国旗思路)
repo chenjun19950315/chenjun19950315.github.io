@@ -55,13 +55,23 @@ vector<int> patition(vector<int> &arr, int left, int right)
 //国旗问题把数组分成两部分，小于num的部分和大于num的部分,如果等于部分的下标和K相等，说明等于部分的数就是要找的数，否则到less那一部分
 //继续找，如果是找大于K的数只需在改变patition的more和less的位置，
 //时间复杂度按概率学达到0（N）
+//找到第K小的数
 int findKValue(vector<int>& arr,int k,int left,int right)
 {
 	vector<int> result = patition(arr, left, right);
-	if (result[0]<k &&result[1]>k)  //如果等于部分的下标和K相等，说明等于部分的数就是要找的数，
+	if (result[0]<k &&result[1]>k)
 		return arr[result[0] + 1];
-	else
-		return findKValue(arr, k, left, result[0]);//否则到less那一部分继续找
+	else if(k>=result[1])
+		return findKValue(arr, k, result[1],right);
+	else if(k<=result[0])
+		return findKValue(arr, k, left, result[0]);
+}
+int main()
+{
+
+	vector<int> arr{ 10,3,-4,2 ,1};
+	cout << findKValue(arr, 3, 0,4) << endl;
+	return 0;
 }
 int main()
 {

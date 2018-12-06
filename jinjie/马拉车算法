@@ -1,0 +1,32 @@
+int manacgher( string &arr)
+{
+	addSpecialChar(arr);
+	int c = -1;
+	int r=-1;
+	int maxvalue = -1;
+	int parr[100] = {0};//字符串长度不超过100
+	for (int i = 0; i < arr.length(); i++) {
+		parr[i] = r > i ? min(parr[2 * c - i], r - i) : 1;//如果情况1，标记为1，如果不为情况一，则选择最小的瓶颈
+	
+		while (i + parr[i] < arr.length() && i - parr[i] >= 0){   //分为四种情况，整合成一个算法
+			if (arr[parr[i] + i] == arr[i - parr[i]])  //如果为情况二和情况三（笔记本），这里直接跳出，否则计算
+				parr[i]++;
+			else
+				break;
+		}
+		if (parr[i] + i > r) {
+			r = parr[i] + i;
+			c = i;
+		}
+		maxvalue = max(parr[i], maxvalue);
+	}
+
+	return maxvalue-1;
+}
+int main()
+{
+	string s = "acbdbkd";
+	cout<<manacgher(s)<<endl ;
+
+	return 0;
+}

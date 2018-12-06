@@ -70,7 +70,7 @@ void printArray(const vector<int>& arr)
 	cout << endl;
 }
 
-//arr为要处理的数组，left,right是要处理的范围，num是荷兰国旗中的那个中间数
+//arr为要处理的数组，left,right是要处理的范围，包括left,right,num是荷兰国旗中的那个中间数
 vector<int> partition(vector<int> &arr, int left, int right)
 {
 	uniform_int_distribution<unsigned> u1(left, right);

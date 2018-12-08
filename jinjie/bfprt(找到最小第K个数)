@@ -1,0 +1,61 @@
+vector<int> patition(vector<int> &arr, int num,int left, int right)//已知划分值
+{
+	
+	vector<int> result;
+
+	int less = left - 1;
+	int more = right+1 ;
+	int cur = left;
+	while (cur <more) {
+		if (arr[cur] < num)
+			swap(arr[++less] , arr[cur++]);
+		else if (arr[cur] == num)
+			cur++;
+		else
+			swap(arr[--more] ,arr[cur]);
+	}
+	result.push_back(less);
+	result.push_back(more);
+	return result;
+}
+int bfprt(vector<int>& arr, int k, int left, int right);
+int findMid(vector<int>& arr, int left, int right)//找到中位数，
+{
+	int size = (right - left + 1);
+	vector<int> new_arr;            //保存每五个数的中位数，组成新数组
+	for (int i = 0; i <= size / 5; i++) {
+		if (i == (size / 5)) {
+			sort((arr.begin() + i * 5 + left), arr.begin()+right+1);//对剩余的数排序
+			new_arr.push_back(arr[i * 5 + (size % 5) / 2]);//找出最后几个数的中位数
+			continue;
+		}
+		sort((arr.begin() + i * 5 + left), (arr.begin() + i * 5 + 5 + left));//对每五个数排序
+		new_arr.push_back(arr[(i * 10 + 4) / 2]);//找出每五个数的中位数
+	}
+	return bfprt(new_arr, new_arr.size() / 2, 0, new_arr.size() - 1);//找出新数组的中位数，变成划分值
+}
+int bfprt(vector<int>& arr, int k,int left,int right)
+{
+	int size = (right - left + 1);
+	
+	if (size <= 5)
+	{
+		sort(arr.begin() + left, arr.end());
+		return arr[k];
+	}
+	int num = findMid(arr, left, right);//找到划分值
+	vector<int> result = patition(arr,num, 0, arr.size() - 1);//划分
+	if (result[0]<k &&result[1]>k)//如果找到，直接返回
+		return arr[result[0] + 1];
+	else if (k >= result[1])//在数组的右边，遍历右边
+		return bfprt(arr, k, result[1], right);
+	else if (k <= result[0])//在数组的左边，遍历左边
+		return bfprt(arr, k, left, result[0]);
+}
+int main()
+{
+
+	vector<int> arr{-2,10,3,2,-4};
+	cout<<bfprt(arr, 1,0,arr.size()-1)<<endl;
+	return 0;
+}

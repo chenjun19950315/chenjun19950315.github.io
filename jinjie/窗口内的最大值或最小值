@@ -1,0 +1,29 @@
+//进阶班2，01：30：00
+vector<int> slideWinMaxValue(vector<int>& arr,int w)
+{
+	if (arr.size() < 2)
+		throw("arr must beyord three num");
+	deque<int> dq;//双向队列只保存索引值
+	vector<int> result;
+	dq.push_back(0);
+	for (int i = 0; i < arr.size(); i++) {
+		while (!dq.empty() && arr[dq.back()] <= arr[i])//如果新进的数大于等于双向队列中的数，则弹出双向队列的数，直到不小于等于新进的数
+			dq.pop_back();
+		dq.push_back(i);//压入新进的数（用数组下标代替）
+		if (i >= w - 1) {//前几个未形成窗口的数不需要弹出
+			if (dq.front() == i-w)
+				dq.pop_front();             //果然当前数被舍弃，则弹出
+			result.push_back(arr[dq.front()]);//保存结果
+		}
+	}
+	for (auto r : result)
+		cout << r << endl;
+	return result;
+}
+int main()
+{
+
+	vector<int> arr{4,12,-4,6,23,4,5,6};
+	slideWinMaxValue(arr, 3);
+	return 0;
+}

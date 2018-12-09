@@ -16,8 +16,7 @@ vector<int> slideWinMaxValue(vector<int>& arr,int w)
 			result.push_back(arr[dq.front()]);//保存结果
 		}
 	}
-	for (auto r : result)
-		cout << r << endl;
+	
 	return result;
 }
 int main()

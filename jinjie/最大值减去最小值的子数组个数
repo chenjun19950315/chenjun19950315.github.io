@@ -1,0 +1,39 @@
+//进阶班2，01：30：00,笔记本有相应的思路
+int slideWinMaxArrNum(vector<int>& arr,int num)
+{
+	if (arr.size() < 2)
+		throw("arr must beyord three num");
+	deque<int> dqmax;//双向队列只保存索引值,保存窗口内最大值
+	deque<int> dqmin;//双向队列只保存索引值，保存窗口内最小值
+	int right = 0;
+	int max;
+	int min;
+	int result = 0;
+
+	for (int left = 0; left < arr.size(); left++) {
+		for (; right < arr.size(); right++) {
+			while (!dqmax.empty() && arr[dqmax.back()] <= arr[right])//如果新进的数大于等于双向队列中的数，则弹出双向队列的数，直到不小于等于新进的数
+				dqmax.pop_back();
+			dqmax.push_back(right);//压入新进的数（用数组下标代替）
+			while (!dqmin.empty() && arr[dqmin.back()] >= arr[right])//如果新进的数小于等于双向队列中的数，则弹出双向队列的数，直到不大于等于新进的数
+				dqmin.pop_back();
+			dqmin.push_back(right);//压入新进的数（用数组下标代替）
+			if (arr[dqmax.front()] - arr[dqmin.front()] > num)//找到直到不成立的时候
+				break;
+		}
+		if(dqmax.front()== left)
+			dqmax.pop_front();    
+		if (dqmin.front() == left)
+			dqmin.pop_front();
+		result = result + right - left;//注意不要加1，因为这时候j的位置是不成立的位置，j-i+1-1;
+	}
+   
+	return result;
+}
+int main()
+{
+
+	vector<int> arr{ 1,2,0};
+	slideWinMaxArrNum(arr,2);
+	return 0;
+}

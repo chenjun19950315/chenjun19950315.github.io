@@ -1,0 +1,61 @@
+//求最大矩形问题CCF-2013 12-3，复杂度0(n),
+//输入[4,3,2,5,6],输出最大矩形的面积，使用单调栈
+int maxRectangle(const vector<int>& arr )
+{
+	if (arr.size() == 0)
+		return 0;
+	int left;
+	int right;
+	int cur;
+	int maxValue = -1;
+	int value;
+	stack<int> monoStack;
+	//注意arr[i] <= arr[monoStack.top()，因为当相邻数有重复的时候，最后一个相邻的数求的值为最大的值[4,3,4,4,2],第
+	//三个4和第四个4相邻，但第四个4求出的值为这两个四的真实值
+	for (int i = 0; i < arr.size(); i++) {
+		while (!monoStack.empty() && arr[i] <= arr[monoStack.top()]) {
+			cur = monoStack.top();
+			monoStack.pop();
+			left = monoStack.empty() ? -1 : monoStack.top();
+			value = (i - left - 1)*arr[cur];
+			maxValue = max(maxValue, value);
+		}
+		monoStack.push(i);
+	}
+	while (!monoStack.empty()) {
+
+		right = arr.size();
+		cur = monoStack.top();
+		monoStack.pop();
+		left = monoStack.empty() ? -1 : monoStack.top();
+		value = (right - left - 1)*arr[cur];
+		maxValue = max(maxValue, value);
+	}
+	return maxValue;
+}
+//求最大子矩阵的大小，只要对每一列调用最大矩形问题即可，具体详解见笔记或进阶班3-1，1：10：00
+int maxRectangleSize(const vector<vector<int>>& arr)
+{
+	if (arr.size() == 0)
+		return 0;
+	int maxValue = -1;
+	int value;
+	int row = arr.size();
+	int col = arr[0].size();
+	vector<int> tArr(col,0);//设置大小为矩阵每行的大小
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++)
+			arr[i][j] == 0 ? tArr[j]=0 : tArr[j]++;//计算每一行的矩形大小
+		value = maxRectangle(tArr);
+		maxValue = max(maxValue, value);//求每一行的矩形大小中的最大值
+	}
+	
+	return maxValue;
+
+}
+int main()
+{
+	vector<vector<int>> arr{ {1,1,0,1},{0,1,1,1},{0,1,0,1} };
+	cout << maxRectangleSize(arr) << endl;
+	return 0;
+}

@@ -1,0 +1,35 @@
+#详解见笔记或者2:40:00
+void morridTraversal(BinTree bt)
+{
+	if (!bt)
+		return ;
+	BinTree cur = bt;
+	BinTree mostRight;
+	while(cur!=nullptr){
+	if (cur->left != nullptr) {
+		cout << cur->data << endl;
+		mostRight = cur->left;
+		while (mostRight->right != nullptr&&mostRight->right != cur)
+			mostRight = mostRight->right;
+		if (mostRight->right == nullptr) {
+			mostRight->right = cur;
+			cur = cur->left;
+		}
+		else {
+			mostRight->right = nullptr;
+			cur = cur->right;
+		}
+	}
+	else
+	{
+		cout << cur->data << endl;
+		cur = cur->right;
+	}
+	}
+}
+int main()
+{
+	BinTree bt = createBinTree();
+	morridTraversal(bt);
+	return 0;
+}

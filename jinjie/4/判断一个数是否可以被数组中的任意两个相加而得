@@ -1,0 +1,49 @@
+//用indice记录下，排序后的数在排序前的位置，同时对数组进行排序
+void sortTwo(vector<int> &arr, vector<int> &indice)
+{
+	int id;//记录要替换的位置
+	int t;//设置一个临时变量
+	for(int i=0;i<arr.size()-1;i++){
+		id = i;
+		for (int j = i + 1; j < arr.size(); j++) {
+			if (arr[j] < arr[id])
+				id = j;
+		}
+		t = arr[i];
+		arr[i] = arr[id];
+		arr[id] = t;
+
+		t = indice[id];
+		indice[id] = i;
+		indice[i]=t;
+		}
+}
+//判断一个数是否可以被数组中的任意两个相加而得，详解见笔记
+//如果可以，则返回这两个数的坐标，否则返回{-1，-1}
+vector<int> twoNumAdd(vector<int> arr,int aim)
+{
+	vector<int> indice(arr.size());
+	for (int i = 0; i < indice.size(); i++)
+		indice[i] = i;
+	sortTwo(arr, indice);
+	int head = 0;
+	int end = arr.size() - 1;
+	while (head != end) {
+		if (arr[head] + arr[end] == aim)
+			return{ indice[head],indice[end] };
+		else if (arr[head] + arr[end] < aim)
+			head++;
+		else
+			end--;
+	}
+	return{ -1,-1 };
+}
+int main()
+{
+	vector<int> arr = { 9,6,3,10,5,10 };
+	vector<int> result(2);
+	result=twoNumAdd(arr,111);
+	cout << result[0] << " " << result[1] << endl;
+	return 0;
+}
+

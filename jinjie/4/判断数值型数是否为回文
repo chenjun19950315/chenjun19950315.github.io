@@ -1,0 +1,22 @@
+//判断一个int数值是否为回文
+//解题思路见笔记
+bool isPalindromeNumber(int num)
+{
+	int help = 1;
+	//
+	while (num / help >= 10)//使用这种方法构造出help保证help不会溢出，因为只要num不会溢出，help一定不会溢出
+		help = help * 10;
+	while (num != 0) {
+		if (num % 10 != num / help)
+			return false;
+		num = (num%help) / 10;
+		help = help / 100;
+	}
+	return true;
+}
+int main()
+{
+	int a = 100;
+	cout << isPalindromeNumber(a) << endl;
+	return 0;
+}

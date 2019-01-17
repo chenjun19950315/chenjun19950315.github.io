@@ -16,7 +16,7 @@ bool isPalindromeNumber(int num)
 }
 int main()
 {
-	int a = 100;
-	cout << isPalindromeNumber(a) << endl;
+	int test= 100;
+	cout << isPalindromeNumber(test) << endl;
 	return 0;
 }

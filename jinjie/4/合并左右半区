@@ -1,0 +1,44 @@
+void mergeLR(LinkList left, LinkList right)
+{
+	LinkList next;
+	while (left->next!= nullptr) {
+		next = right->next;
+		right->next = left->next;
+		left->next = right;
+		left = right->next;
+		right = next;
+	}
+	left->next = right;
+}
+//首先找到中间位置，利用快指针每次走两步，慢指针走一步， 找出中间位置，注意将中间位置，为了合并时判断结束
+void divisionList(LinkList head)
+{
+	if (head->next == nullptr||head->next->next==nullptr)
+		return;
+	LinkList fast= head->next;
+	LinkList mid = head;   
+	while (fast->next!=nullptr) {
+		if (fast->next->next != nullptr) {
+			mid = mid->next;
+			fast = fast->next->next;
+		}
+		else
+		{
+			mid = mid->next;
+			fast = fast->next;
+		}
+	}
+	fast = mid->next;
+	mid->next=nullptr;
+	mergeLR(head->next, fast);
+}
+int main()
+{
+	LinkList head = new Node;
+	InitList(head);
+	CreateFromTail(head);
+	DisplayList(head);
+	divisionList(head);
+	DisplayList(head);
+	return 0;
+}

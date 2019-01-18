@@ -1,0 +1,29 @@
+bool valid(string &str)
+{
+	if (str.size() == 0)
+		return false;
+	if (str[0] == '-' && (str.size() == 2 || str[1] == '0'))
+		return false;
+	if (str[0] == '0' && str.size() != 1)
+		return false;
+	if (str[0] != '-' && (str[0] > '9'||str[0]<'0'))
+		return false;
+	for (int i = 1; i < str.size(); i++) {
+		if (str[i]<'0' || str[i]>'9')
+			return false;
+		
+	}
+	return true;
+}
+//详解见笔记，进阶班4
+int strToInt(string& str)
+{
+	//判断字符串是否有效
+	if (!valid(str))
+		return 0;
+	bool positive = str[0] == '-' ? 0 : 1;
+	int result = 0;
+	int num = 1;
+
+	for (int i = positive == 0 ? 1 : 0; i < str.size(); i++) {
+		//防止resul

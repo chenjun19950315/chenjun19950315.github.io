@@ -1,0 +1,36 @@
+//判断是否是丑数
+bool isugly(int num)
+{
+	//去掉2因子
+	while (num % 2 == 0)
+		num = num / 2;
+	//去掉3因子
+	while (num % 3 == 0)
+		num = num / 3;
+	//去掉5因子
+	while (num % 5 == 0)
+		num = num / 5;
+
+	//看最后的因子是否只剩下1
+	if (num == 1)
+		return true;
+	return false;
+
+}
+//返回第k个丑数
+int ugly(int k)
+{
+	int count = 0;
+	int num = 0;
+	while (count < k) {
+		++num;
+		if (isugly(num))
+			count++;
+	}
+	return num;
+}
+int main()
+{
+	cout << ugly(7) << endl;
+	return 0;
+}

@@ -1,0 +1,31 @@
+int min_three(int x,int y,int z)
+{
+	int t = x < y ? x : y;
+	return t < z ? t : z;
+}
+//返回第k个丑数,解法二，详解见笔记，进阶5
+int ugly(int k)
+{
+	
+	int x = 0;
+	int y = 0;
+	int z = 0;
+	vector<int> arr(k);
+	arr[0] = 1;
+	for (int i = 1; i < k; i++) {
+		arr[i] = min_three(arr[x] * 2, arr[y] * 3, arr[z] * 5);
+		if (arr[i] == arr[x] * 2)
+			x++;
+		if (arr[i] == arr[y] * 3)
+			y++;
+		if (arr[i] == arr[z] * 5)
+			z++;
+	}
+	return arr[k - 1];
+	
+}
+int main()
+{
+	cout << ugly(11) << endl;
+	return 0;
+}

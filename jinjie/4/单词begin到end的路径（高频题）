@@ -1,0 +1,97 @@
+//找到word单词，在dict字典中的所有邻居
+vector<string> getnext(const string& word, const set<string>& dict)
+{
+
+	    string t;
+		vector<string> result;
+		
+		for (int i = 0; i < word.size(); i++) {
+			char cur = word[i];
+			for (char c = 'a'; c <= 'z'; c++) {
+				t = word;
+				if (cur == c)
+					continue;
+				t[i] = c;
+				if (dict.count(t) == 1)
+					result.push_back(t);
+			}
+			}
+		return result;
+		
+}
+//找到字典中每个单词的邻居
+map<string, vector<string>> getnexts(const set<string>& dict)
+{
+	map<string, vector<string>> nexts;
+	for (const auto& d : dict)
+		nexts.insert({ d,getnext(d, dict) });
+	return nexts;
+}
+//得到字典中每个单词离begin的距离
+map<string, int> getdistance(string begin, map<string, vector<string>> nexts)
+{
+	queue<string> q;
+	map<string, int> result;
+	result.insert({ begin,0 });
+	set<string > repeat{ begin };
+	string word;
+	vector<string> next;
+	q.push(begin);
+	while (!q.empty()) {
+		word = q.front();
+		q.pop();
+		next = nexts[word];
+		for (const auto& n : next) {
+			if (repeat.count(n) == 0)
+			{
+				repeat.insert(n);
+				result.insert({ n,result[word] + 1 });
+				q.push(n);
+			}
+		}
+
+	}
+	return result;
+}
+//从begin出发，只往距离增大的方向前进，直到到达end为止
+void shorter_path(const string& cur, const string& end, map<string, int>& distance, map<string, vector<string>>& nexts
+	,vector<vector<string> >& results,vector<string> result)//注意result不能为引用
+{
+	result.push_back(cur);
+	if (cur == end)
+		results.push_back(result);
+	else {
+		vector<string> next = nexts[cur];
+		for (auto n : next)
+			if (distance[n] == distance[cur] + 1)
+				shorter_path(n, end, distance, nexts, results, result);
+		
+	}
+	
+}
+//主调函数，详解见笔记和进阶班4（何）
+vector<vector<string>> word_ladder(const string& begin,const string end, set<string> dict)
+{
+
+	dict.insert(begin);//将begin也放入到字典中，以便计算邻居和距离
+	map<string, vector<string>> nexts = getnexts(dict);
+	map<string, int> distance = getdistance(begin, nexts);
+	vector<string> result;
+	vector<vector<string>> results;
+	shorter_path(begin, end, distance, nexts, results, result);
+	//展示结果
+	for (auto res : results){
+		for (auto res1 : res)
+			cout << res1 << " ";
+		cout << endl;
+	}
+	return results;
+}
+int main()
+{
+	set<string> s{ "abd","aac","aaa","cbd" };
+	string begin = "abc";
+	string end = "cbd";
+	word_ladder(begin, end, s);
+	return 0;
+}

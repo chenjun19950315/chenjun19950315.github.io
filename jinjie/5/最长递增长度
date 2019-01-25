@@ -1,0 +1,40 @@
+//详解见笔记，进阶班5（何）
+int mostDecrease(vector<vector<int>>& arr, vector<vector<int>>& length, int i, int j, int prio)
+{
+	if (i < 0 || i>arr.size() - 1 || j<0 || j>arr[0].size()-1 || arr[i][j] >= prio)
+		return 0;
+	if (length[i][j] == 0) {
+		length[i][j] = max(length[i][j], mostDecrease(arr, length, i + 1, j, arr[i][j])+1);
+		length[i][j] = max(length[i][j], mostDecrease(arr, length, i- 1, j, arr[i][j]) + 1);
+		length[i][j] = max(length[i][j], mostDecrease(arr, length, i , j+1, arr[i][j]) + 1);
+		length[i][j] = max(length[i][j], mostDecrease(arr, length, i , j-1, arr[i][j]) + 1);
+	}
+	return length[i][j];
+}
+int mostLong(vector<vector<int>> arr)
+{
+	if (arr.size() == 0 || arr[0].size() == 0)
+		return 0;
+	int row = arr.size();
+	int col = arr[0].size();
+	int maxValue = 0;
+	vector<vector<int>> length(row);
+	for (auto& l : length)//初始化vector的大小，注意要加&
+		l.resize(col);
+	for(int i=0;i<row;i++)
+		for (int j = 0; j < col; j++) {
+
+			maxValue = max(maxValue, mostDecrease(arr, length, i - 1, j, arr[i][j]) + 1);
+			maxValue = max(maxValue, mostDecrease(arr, length, i+1, j, arr[i][j]) + 1);
+			maxValue = max(maxValue, mostDecrease(arr, length, i , j-1, arr[i][j]) + 1);
+			maxValue = max(maxValue, mostDecrease(arr, length, i, j+1, arr[i][j]) + 1);
+		}
+	return maxValue;
+}
+int main()
+{
+	vector<vector<int>> arr{ {9,9,4},{6,6,8},{2,1,1,} };
+	cout << mostLong(arr) << endl;
+	
+	return 0;
+}

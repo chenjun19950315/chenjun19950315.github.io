@@ -1,0 +1,26 @@
+//给定一个字符串数组，将字母异位词组合在一起，字母异位词指字母相同，但排列不同的字符串
+//详解见笔记，进阶班5（何）
+map<string, vector<string>>  Ectopic(vector<string> arr)
+{
+	map<string, vector<string>> result;
+	string tmp;
+	for (auto a : arr) {
+		tmp = a;
+		sort(tmp.begin(), tmp.end());
+		result[tmp].push_back(a);
+	}
+	//结果展示
+	for (auto r : result) {
+		cout << r.first << ": ";
+		for (auto a : r.second)
+			cout << a << " ";
+		cout << endl;
+	}
+	return result;
+}
+int main()
+{
+	vector<string> arr{ "eat","tea","tan","ate","nat","bat" };
+	Ectopic(arr);
+	return 0;
+}

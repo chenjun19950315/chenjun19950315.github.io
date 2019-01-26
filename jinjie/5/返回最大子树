@@ -1,0 +1,44 @@
+//构造返回值类型，详解见笔记，进阶5（何）
+class returnData
+{
+public:
+	returnData(BinTree maxBSTHead, int maxBSTSize, int max1, int min1) :maxBSTHead(maxBSTHead), maxBSTSize(maxBSTSize), maxValue(max1), minValue(min1) {};
+	~returnData() {};
+
+
+	BinTree maxBSTHead;
+	int maxBSTSize;
+	int maxValue;
+	int minValue;
+};
+returnData process(BinTree x)
+{
+	if (x == nullptr)
+		return{ nullptr,0,INT_MIN,INT_MAX };
+	returnData leftData = process(x->left);
+	returnData rightData = process(x->right);
+	int p1 = leftData.maxBSTSize;
+	int p2 = rightData.maxBSTSize;
+	int p3 = 0;
+	if (x->left == leftData.maxBSTHead&&x->right == rightData.maxBSTHead&&
+		x->data > leftData.maxValue&&x->data < rightData.minValue)
+		p3 = p1 + p2 + 1;
+	//构造返回值
+	int maxBSTSize = max(max(p1, p2), p3);
+	int maxValue = max(max(x->data, leftData.maxValue), rightData.maxValue);
+	int minValue = min(min(x->data, leftData.minValue), rightData.minValue);
+	BinTree maxBSTHead = maxBSTSize == p3 ? x : (maxBSTSize == p2 ? rightData.maxBSTHead : leftData.maxBSTHead);
+	return{ maxBSTHead ,maxBSTSize ,maxValue ,minValue };
+
+}
+int getMaxBSTSize(BinTree head)
+{
+	return process(head).maxBSTSize;
+}
+int main()
+{
+	BinTree head = createBinTree();
+	cout << getMaxBSTSize(head) << endl;
+	
+	return 0;
+}

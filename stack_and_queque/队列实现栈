@@ -1,0 +1,62 @@
+//如何仅用队列结构实现栈结构
+class new_stack {
+private:
+	queue<int> datas;
+	queue<int> help;
+	void swap();
+public:
+	bool empty();
+	void push(int data);
+	void pop();
+	int top();
+	
+};
+bool new_stack::empty()
+{
+	return datas.empty();
+}
+void new_stack::push(int data)
+{
+	datas.push(data);
+}
+void new_stack::pop()
+{
+	while (datas.size() > 1) {
+		help.push(datas.front());
+		datas.pop();
+	}
+	datas.pop();
+	swap();
+}
+void new_stack::swap()
+{
+	queue<int> tmp;
+	tmp = datas;
+	datas = help;
+	help = tmp;
+}
+int new_stack::top()
+{
+	while (datas.size() > 1) {
+		help.push(datas.front());
+		datas.pop();
+	}
+	int data=datas.front();
+	help.push(data);
+	datas.pop();
+	swap();
+	return data;
+}
+
+int main()
+{
+	
+	new_stack q;
+	q.push(1);
+	q.push(2);
+	q.pop();
+	q.pop();
+	cout << q.top() << endl;
+	
+	return 0;
+}

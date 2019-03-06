@@ -1,43 +1,36 @@
 //转圈打印数组
-void printEdge(vector<vector<int>> &num, int tr, int tc, int br, int bc)
+//每次给出左上角和右下角的坐标，打印相应的边
+void PrintEdge(vector<vector<int>> &arr,vector<int> leftup,vector<int> rightBottom)
 {
-	if (tr == br) {
-		for (int i = tc; i <= bc; i++)
-			cout << num[tr][i] << endl;
-	}
-	else if (tc == bc) {
-		for (int i = tr; i <= br; i++)
-			cout << num[i][tc] << endl;
-	}
-	else {
-		int currow = tr;
-		int curcol = tc;
-		while (curcol != bc)
-			cout << num[currow][curcol++] << endl;
-		while (currow != br)
-			cout << num[currow++][curcol] << endl;
-		while(curcol!=tc)
-			cout << num[currow][curcol--] << endl;
-		while (currow != tr)
-			cout << num[currow--][curcol] << endl;
-	}
-}
-void printTransh(vector<vector<int>> num)
-{
-	int tr = 0;
-	int tc = 0;
-	int br = num.size() - 1;
-	int bc = num[0].size() - 1;
-	while (tr <= br &&tc <= bc)
-		printEdge(num, tr++, tc++, br--, bc--);
+	if (leftup[0] > rightBottom[0] || leftup[1] > rightBottom[1])
+		return;
+	for (int i = leftup[1]; i < rightBottom[1]; i++)
+		cout << arr[leftup[0]][i] << " ";
+	for (int i = leftup[0]; i < rightBottom[0]; i++)
+		cout << arr[i][rightBottom[1]] << " ";
+	for (int i = rightBottom[1]; i > leftup[1]; i--)
+		cout << arr[rightBottom[0]][i] << " ";
+	for (int i = rightBottom[0]; i > leftup[0]; i--)
+		cout << arr[i][leftup[1]] << " ";
+	cout << endl;
+
+	PrintEdge(arr, { leftup[0] + 1,leftup[1] + 1 }, { rightBottom[0] -1,rightBottom[1] - 1 });
 
 }
+//打印圈
+void PrintRing(vector<vector<int>> &arr)
+{
+	int col = arr.size();
+	int row = arr[0].size();
+	vector<int> leftup{ 0,0 };
+	vector<int> rightBottom{ col-1 ,row-1 };
+	PrintEdge(arr, leftup, rightBottom);
+}
+
 int main()
 {
-	vector<vector<int>> p = { {1,2,3},{4,5,6} ,{7,8,9},{10,11,12} };
-	printTransh(p);
-	
-
-
+	vector<vector<int>> arr = { {1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16} };
+	PrintRing(arr);
 	return 0;
 }
+

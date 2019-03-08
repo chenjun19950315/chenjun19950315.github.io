@@ -9,102 +9,70 @@
 
 
 //思路:设置三个链表，分别是小于，等于，大于pivot的链表，遍历整个链表，形成这三个小链表，最后串起这三个链表
-void listPartition2(LinkList head, char pivot)
+void Listpartition(LinkList head1, char pivot)
 {
-	LinkList sH = nullptr;   //小于pivot的链表头
-	LinkList sT = nullptr;//小于pivot的链表尾
-	LinkList qH = nullptr;   //等于pivot的链表头
-	LinkList qT = nullptr;//等于pivot的链表尾
-	LinkList bH = nullptr;   //大于pivot的链表头
-	LinkList bT = nullptr;//大于pivot的链表尾
-	LinkList p = head;
-	//遍历整个链表，形成这三个小链表
-	while (p->next != nullptr)
-	{
+	LinkList less = new Node;
+	LinkList more = new Node;
+	LinkList cur = new Node;
+	LinkList less1 = less;
+	LinkList more1 = more;
+	LinkList cur1 = cur;
+	LinkList less2 = less;
+	LinkList more2 = more;
+	LinkList cur2 = cur;
+	LinkList p = head1;
+	LinkList q = head1;
+	while (p->next != nullptr) {
 		p = p->next;
-		if (p->data < pivot) {
-			if (sH == nullptr) {
-				sH = p;
-				sT = p;
-			}
-			else {
-				sT->next = p;
-				sT = p;
-			}
+		if (p->data >pivot)
+		{
+			more->next = p;
+			more = more->next;
 		}
-
-		else if (p->data == pivot) {
-			if (qH == nullptr) {
-				qH = p;
-				qT = p;
-			}
-			else {
-				qT->next = p;
-				qT = p;
-			}
+		else if (p->data < pivot)
+		{
+			less->next = p;
+			less = less->next;
 		}
 		else
 		{
-			if (bH == nullptr) {
-				bH = p;
-				bT = p;
-			}
-			else {
-				bT->next = p;
-				bT = p;
-			}
+			cur->next = p;
+			cur = cur->next;
 		}
 	}
-	//给链表最后加结束符，如果大于的链表有数，则加在大于链表，否在判断等于的链表是否为空，不为空加在等于的链表末位，为空则判断小于的链表是否
-	//为空，不为空则加在小于链表的末位
-
-	if (bT != nullptr)
-		bT->next = nullptr;
-	else {
-		if (qT != nullptr)
-			qT->next = nullptr;
-		else
-			if (sT != nullptr)
-				sT->next = nullptr;
+	more->next = nullptr;
+	less->next = nullptr;
+	cur->next = nullptr;
+	while (less1->next != nullptr) {
+		less1 = less1->next;
+		head1->next = less1;
+		head1 = head1->next;
+	}
+	while (cur1->next != nullptr) {
+		cur1 = cur1->next;
+		head1->next = cur1;
+		head1 = head1->next;
+	}
+	while (more1->next != nullptr) {
+		more1 = more1->next;
+		head1->next = more1;
+		head1 = head1->next;
 	}
 	
-	//将三个链表串起来，注意链表为空的状态
-	if (sH != nullptr)
-	{
-		head->next = sH;
-		if (qH != nullptr)
-		{
-			sT->next = qH;
-			if (bH != nullptr)
-				qT->next = bH;
-		}
-		else {
-			if (bH != nullptr)
-				sT->next = bH;
-		}
-	}
-	else {
-		if (qH != nullptr)
-		{
-			head->next = qH;
-			if (bH != nullptr)
-				qT->next = bH;
-		}
-		else {
-			if (bH != nullptr)
-				head->next = bH;
-		}
-	}
 
-
+	head1->next = nullptr;
+	
+	DisplayList(q);
+	free(less2);
+	free(more2);
+	free(cur2);
 }
-	
 int main()
 {
-	LinkList head = new Node;
-	InitList(head);
-	CreateFromTail(head);
-	listPartition2(head, '3');
-	DisplayList(head);
+	LinkList head1=new Node;
+	InitList(head1);
+	CreateFromTail(head1);
+	Listpartition(head1,'3');
+
 	return 0;
 }

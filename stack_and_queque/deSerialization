@@ -1,0 +1,54 @@
+//序列化前序
+
+string serial(BinTree bt)
+{
+
+	if (bt == nullptr)
+		return "#_";
+	string result;
+	int cur = bt->data;
+	string cur_string = to_string(cur);
+	cur_string += "_";
+	result += cur_string;
+	result+=serial(bt->left);
+	result+=serial(bt->right);
+	return result;
+}
+
+//逆序列化前序
+BinTree reorder(queue<int> &q)
+{
+	int cur = q.front();
+	q.pop();
+	if (cur == 0)
+		return nullptr;
+
+	BinTree bt = new TNode;
+	bt->data = cur;
+	bt->left = reorder(q);
+	bt->right = reorder(q);
+	return bt;
+}
+//逆序列化前序
+BinTree deSerialization(string s)
+{
+	queue<int> q;
+	for (int i = 0; i < s.size()-1; i = i + 2)
+	{
+		if (s[i] == '#')
+			q.push(0);
+		else
+			q.push(s[i] - '0');
+	}
+	return  reorder(q);
+}
+
+int main() {
+	BinTree bt = createBinTree();
+	
+	string s = serial(bt);
+	BinTree bt1=deSerialization(s);
+	LevelorderTraversal(bt1);
+
+	return 0;
+}

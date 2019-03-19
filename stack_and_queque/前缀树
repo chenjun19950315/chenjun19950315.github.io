@@ -123,3 +123,83 @@ int main()
 	cout << t.searth(string("abc")) << endl;
 	return 0;
 }
+
+//C++版本
+struct TrieNode {
+	int path;//表示经过该字符的个数 
+	int end;//表示以该字符为结尾的个数
+	vector< shared_ptr<TrieNode> > nexts;  //只假设有26个字符的路径
+	TrieNode(int p = 0, int e = 0):path(p),end(e),nexts(26,nullptr) {
+	}
+};
+
+class Trie {
+private:
+	shared_ptr<TrieNode> root;
+public:
+	Trie() { root = make_shared<TrieNode>(0, 0); }
+	void insertTrie(string str);//在前缀树中插入字符串
+	void deleteTrie(string str);//在前缀树中删除字符串
+	int search(string str);//查找在前缀树中有多少个和str一样的字符串
+	int preSearch(string str);//查找在前缀树中有多少个以str为开头的字符串
+};
+void Trie::insertTrie(string str)
+{
+	if (str.size() == 0)
+		return;
+	shared_ptr<TrieNode> node = root;
+	for (int i = 0; i < str.size(); i++) {
+		if (node->nexts[str[i] - 'a'] == nullptr)
+			node->nexts[str[i] - 'a'] = make_shared<TrieNode>(0,0);
+		node = node->nexts[str[i] - 'a'];
+		node->path++;
+	}
+	node->end++;
+}
+void Trie::deleteTrie(string str)
+{
+	if (str.size() == 0 || search(str)==0)
+		return;
+	shared_ptr<TrieNode> node = root;
+	for (int i = 0; i < str.size(); i++) {
+			node = node->nexts[str[i] - 'a'];
+			node->path--;
+	}
+	node->end--;
+}
+int Trie::search(string str)
+{
+	shared_ptr<TrieNode> node = root;
+	for (int i = 0; i < str.size(); i++) {
+		if (node->nexts[str[i] - 'a'] != nullptr)
+			node = node->nexts[str[i] - 'a'];
+		else
+			return 0;
+	}
+	return node->end;
+}
+int Trie::preSearch(string str)
+{
+	shared_ptr<TrieNode> node = root;
+	for (int i = 0; i < str.size(); i++) {
+		if (node->nexts[str[i] - 'a'] != nullptr)
+			node = node->nexts[str[i] - 'a'];
+		else
+			return 0;
+	}
+	return node->path;
+}
+int main(){
+	Trie t;
+	t.insertTrie("abc");
+	t.insertTrie(string("abc"));
+	t.insertTrie(string("abd"));
+	t.insertTrie(string("ad"));
+	t.insertTrie(string("be"));
+	cout << t.preSearch(string("abc")) << endl;
+	t.deleteTrie(string("abc"));
+	t.deleteTrie(string("abc"));
+	cout << t.preSearch(string("ab")) << endl;
+	cout << t.search(string("abc")) << endl;
+	return 0;
+}

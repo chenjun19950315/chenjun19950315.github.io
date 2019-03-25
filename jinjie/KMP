@@ -20,29 +20,31 @@ vector<int> getNextArray(const string& s)
 	return next;
 }
 //计算一个字符串的最长的相等的前缀和后缀,优化版本
-vector<int> getNextArray1(const string& s)
+vector<int> getNext(const string& s)
 {
-	if (s.length() == 0)
-		throw ("string length must >=1");
-	if (s.length() == 1)
+	if (s.size() == 0)
+		throw runtime_error("must string can't empty");
+	if (s.size() == 1)
 		return{ -1 };
-	vector<int> next(s.length(), 0);//初始化next数组为0
-	next[0] = -1;//第一个字符没有前缀
-	next[1] = 0;
-	int cn = 0;
-	int i = 2;
-	while (i<s.length()) {
-		if (s[cn] == s[i - 1]) {
-			next[i++] =++cn;
-		}
-		else {
-			if (cn >0)
-				cn = next[cn];
-			else
-				next[i++] = 0;
+	int size = s.size();
+	int cur_pos = 0;
+	int cur_next = 0;
+	vector<int> arr(size, 0);
+	arr[0] = -1;
+	arr[1] = 0;
+	for (int i = 2; i < size; i++) {
+		cur_pos = i - 1;
+		while (arr[cur_pos] != -1) {
+			cur_next = arr[cur_pos];
+			if (s[i-1] == s[cur_next]) {
+				arr[i] = cur_next + 1;
+				break;
+			}
+			else 
+				cur_pos = cur_next;
 		}
 	}
-	return next;
+	return arr;
 }
 int KMP(const string& s1,const string& s2)
 {
@@ -59,10 +61,10 @@ int KMP(const string& s1,const string& s2)
 			if (next[i2] == -1)//如果next==-1，说明到了s2的第一个字符串，且不相等，则i1++
 				i1++;
 			else
-				i2 = next[i2];//如果next!=-1,直接跳到next指的地方即可，具体见进阶班
+				i2 = next[i2];//如果next!=-1,直接跳到next指的地方即可
 		}
 	}
-	return (i2 == s2.length() ? (i1 - s2.length()) : -1);
+	return (i2 == s2.length() ? (i1 - i2) : -1);//当字符串匹配完成时,i2==s2.length(),而不是i2==s2.lenth()-1;
 }
 int main()
 {

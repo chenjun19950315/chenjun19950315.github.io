@@ -1,3 +1,11 @@
+void addSpecialChar(string & str)
+{
+	string res = "#";
+	for (auto &s : str) {
+		res = res+s+"#";
+	}
+	str = res;
+}
 int manacgher( string &arr)
 {
 	addSpecialChar(arr);

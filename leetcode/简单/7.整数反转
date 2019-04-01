@@ -1,1 +1,68 @@
+//思路：最简单的思路，先将int的数转化为string，再翻转并转换为int，注意正负号，字符0(尤其是只有0的情况)，溢出
+class Solution {
+public:
+    int reverse(int x) {
+        string s = to_string(x);//转换为string
+	stack<char> s1;
+	bool flag = 0;
+	for (int i = 0; i < s.size(); i++) {//存在栈中方便翻转
+		if (i == 0 && s[i] == '-')
+		{
+			flag = 1;
+			continue;
+		}
+		s1.push(s[i]);
+	}
+	if (flag)
+		s = "-";//注意正负号
+	else
+		s = "";
+	flag = 1;
+	while (!s1.empty()) { //反转
+		if (flag && s1.top() == '0')
+		{
+			s1.pop();
+			continue;
+		}
+		else
+			flag = 0;
+		s = s + s1.top();
+		s1.pop();
+	}
+        if (flag == 1)//如果只有0直接返回0
+		return 0;
 
+	stringstream sstr;
+	long result=0;
+	
+	sstr << s;
+	sstr >> result;
+	
+	if (result<(-pow(2, 31)) || result>(pow(2, 31) - 1))//如果溢出直接返回0
+		return 0;
+	else
+		return result;//否则正常返回
+    }
+};
+//方法二，利用%和/
+class Solution {
+public:
+    int reverse(int x) {
+        bool pn = x >= 0 ? 1 : 0;
+	int res = pn ? 7 : 8;
+    
+	long x1 =abs(long(x));//int正整数代表不了最大的负值，需要类型提升
+	int result = 0;
+	int t = 0;
+	while (x1 > 0) {
+		t = x1 % 10;
+		x1 = x1 / 10;
+		if ((result < INT_MAX / 10) || (result == INT_MAX / 10 && t <= res))
+			result = result * 10 + t;
+		else
+			return 0;
+	}
+
+	return pn?result:-result;
+    }
+};

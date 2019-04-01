@@ -1,0 +1,63 @@
+//题目和思路见leetcode，C++版实现
+//方法一暴力
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+         
+        for(auto i=0;i<nums.size()-1;i++){
+            for(auto j=i+1;j<nums.size();j++){
+              
+                 
+                            if(nums[i]+nums[j]==target)
+                                return {i,j};
+               
+                        
+            }
+        }
+       return {0}; 
+    }
+};
+
+//方法二，使用hash结构
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+         
+      multimap<int, int> testMap;
+	 for (int i = 0; i < nums.size(); i++)
+		testMap.insert(make_pair(nums[i], i));
+
+	for (auto it = testMap.begin(); it != testMap.end(); it++) {
+		int cnt = testMap.count(target - (it->first));
+		auto it1= testMap.find(target - (it->first));
+		while (cnt != 0 &&it1!=testMap.end()) {
+			if (it1 != it)
+				return{ it->second,it1->second };
+			it1++;
+		}
+	}
+       return {0}; 
+    }
+};
+//方法三
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+         
+      multimap<int, int> testMap;
+	for (int i = 0; i < nums.size(); i++) {
+		int cnt = testMap.count(target - nums[i]);
+		auto it1 = testMap.find(target - nums[i]);
+		if(cnt==0)
+			testMap.insert(make_pair(nums[i], i));
+		else{
+		while (it1 != testMap.end()) {
+		
+				return{ i,it1->second };
+			it1++;
+		}
+		}
+    }
+       return {0}; 
+    }
+};

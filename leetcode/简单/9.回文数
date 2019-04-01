@@ -1,0 +1,28 @@
+//思路，不将整型变成string的做法，将整型用数组存起来，在使用两个下标一个从前往后，一个从后往前，注意边界0的时候，还有就是整型长度单复数的时候
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        vector<int> arr;
+	bool pn = x >= 0 ? 1 : 0;
+	if (!pn)   //如果是负的，一定不是回文
+		return false;
+	int t = 0;
+	if(x==0) //边界0一定是回文
+        return true;
+	while (x != 0) 
+	{
+		t = x%10;
+		x = x / 10;
+		arr.push_back(t);
+	}
+	int head = 0;
+	int tail = arr.size() - 1;
+	while (head <= tail) {     //然后写成head!=tail就没有考虑整型长度为偶数的时候
+		if (arr[head] != arr[tail])
+			return false;
+		++head;
+		--tail;
+	}
+	return true;
+    }
+};

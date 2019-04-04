@@ -18,7 +18,7 @@ public:
 	while (l1 != NULL && l2 != NULL) {
 		
 		t = l1->val+l2->val+cur;
-        cur=0;
+       		 cur=0;
 		if (t >= 10) {
 			cur = 1;
 			t = t % 10;   //注意是%不是/
@@ -31,8 +31,8 @@ public:
 	}
     
 	while (l1 != NULL) {
-	    t = l1->val + cur;
-        cur=0;
+	  	  t = l1->val + cur;
+        	cur=0;
 		if (t >= 10) {
 			cur = 1;
 			t = t% 10;
@@ -44,7 +44,7 @@ public:
 	}
 	while (l2 != NULL) {
 		t = l2->val + cur;
-        cur=0;
+       		 cur=0;
 		if (t >= 10) {
 			cur = 1;
 			t = t % 10;
@@ -54,12 +54,12 @@ public:
 		p = p->next;
 		l2 = l2->next;
 	}
-    if(cur!=0)   //注意
-    {
+  	 if(cur!=0)   //注意
+   	 {
         p->val=cur;
         p->next = new ListNode(0);
-		p = p->next;
-    }
+	p = p->next;
+  	  }
     p=head;
     while(p->next->next!=NULL){   //注意，最后会多一个0节点，删除
     p=p->next;

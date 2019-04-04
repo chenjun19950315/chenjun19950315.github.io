@@ -61,8 +61,8 @@ public:
 		p = p->next;
     }
     p=head;
-    while(p->next->next!=NULL){
-        p=p->next;
+    while(p->next->next!=NULL){   //注意，最后会多一个0节点，删除
+    p=p->next;
     }
     p->next=NULL;
 	return head;

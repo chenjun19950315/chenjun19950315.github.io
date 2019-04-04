@@ -1,0 +1,70 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ //C++代码实现，注意直接将两个链表的值相加会超过内存，即使是long long ，所以这种方法不可行，第二种直接每个数相加，注意进位问题
+ //设置cur表示进不进位，注意[9],[1,9]这种情况是[0,0,1],即注意cur最后是不是等于1，等于1的话最后还要进一次位
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+       ListNode* head = new ListNode(0);
+	ListNode* p = head;
+	int cur = 0;
+	int t = 0;
+	while (l1 != NULL && l2 != NULL) {
+		
+		t = l1->val+l2->val+cur;
+        cur=0;
+		if (t >= 10) {
+			cur = 1;
+			t = t % 10;   //注意是%不是/
+		}
+		p->val = t;
+		p->next = new ListNode(0);
+		p = p->next;
+		l1 = l1->next;
+		l2 = l2->next;
+	}
+    
+	while (l1 != NULL) {
+	    t = l1->val + cur;
+        cur=0;
+		if (t >= 10) {
+			cur = 1;
+			t = t% 10;
+		}
+		p->val = t;
+		p->next = new ListNode(0);
+		p = p->next;
+		l1 = l1->next;
+	}
+	while (l2 != NULL) {
+		t = l2->val + cur;
+        cur=0;
+		if (t >= 10) {
+			cur = 1;
+			t = t % 10;
+		}
+		p->val = t;
+		p->next = new ListNode(0);
+		p = p->next;
+		l2 = l2->next;
+	}
+    if(cur!=0)   //注意
+    {
+        p->val=cur;
+        p->next = new ListNode(0);
+		p = p->next;
+    }
+    p=head;
+    while(p->next->next!=NULL){
+        p=p->next;
+    }
+    p->next=NULL;
+	return head;
+    }
+};

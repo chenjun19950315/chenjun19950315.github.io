@@ -1,0 +1,10 @@
+class Solution {
+public:
+	void replaceSpace(char *str,int length) {
+	string s = static_cast<string>(str);
+	while (s.find(" ") != string::npos) {
+		s.replace(s.find(" "), 1, "%20");
+	}
+	str = const_cast<char *>(s.data());
+	}
+};

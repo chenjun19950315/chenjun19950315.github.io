@@ -1,0 +1,25 @@
+//方式一使用滑动窗口的方式，时间复杂度0（2N）=0（N），可以优化顺便记录下标，作用是加速left，当有元素重复时，left直接可以跳到重复元素的下一个
+//比如"abcbbc",当第二个b进来的时候，left可以直接跳到第一个b的下一个
+int lengthOfLongestSubstring(string s) {
+	set<char> un;
+	int result = 0;
+	int left = 0;
+	int right = 0;
+	int count = 0;
+	while (left < s.size() && right <s.size()) {
+		if (un.find(s[right]) == un.end()) {
+			un.insert(s[right]);
+			right++;
+		}
+		else {
+			count = right - left;
+			un.erase(s[left++]);
+			result = result > count ? result : count;
+		}
+		count = 0;
+	}
+  //注意如果rihght直接到达结束,则循环会跳出，就无法正确计算如s='cj',循环里无法计算出正确的result，需要在最后再计算一次
+	count = right - left + 1;
+	result = result > count ? result : count;
+	return result;
+}

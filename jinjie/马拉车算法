@@ -1,3 +1,4 @@
+//返回最大回文子串的长度
 void addSpecialChar(string & str)
 {
 	string res = "#";
@@ -29,12 +30,65 @@ int manacgher( string &arr)
 		maxvalue = max(parr[i], maxvalue);
 	}
 
-	return maxvalue-1;
+	return maxvalue-1; //长度等于回文半径减一
 }
 int main()
 {
 	string s = "acbdbkd";
 	cout<<manacgher(s)<<endl ;
 
+	return 0;
+}
+//返回最大回文字符串
+string addSpecial(string s) {
+	string result = "#";
+	for (auto & s1 : s)
+		result=result+s1+"#";
+	return result;
+}
+string cutSpecial(string &s)
+{
+	string result = "";
+	for (auto& s1 : s) {
+		if (s1 != '#')
+			result = result + s1;
+	}
+	return result;
+}
+string longestPalindrome(string s) {
+	string str = addSpecial(s);
+	int r = -1;
+	int c = -1;
+	int maxvalue = -1;
+	int idex = 0;
+	int parr[10001] = { 0 };
+	for (int i = 0; i < str.size(); i++) {
+		parr[i] = r > i ? min(parr[2*c-i],r-i) : 1;
+		while (i + parr[i] < str.size() && i - parr[i]>=0) {
+			if (str[i + parr[i]] == str[i - parr[i]])
+				parr[i]++;
+			else
+				break;
+		}
+		if (parr[i] + i > r) {
+			c = i;
+			r = parr[i] + i;
+		}	
+	}
+	for (int i = 0; i < str.size(); i++) {
+		if (maxvalue < parr[i]) {
+			maxvalue = parr[i];
+			idex = i;
+		}
+	}
+	string re = str.substr(idex - maxvalue + 1, 2*maxvalue-1);//根据回文中心和最大回文半径切出子串
+	return cutSpecial(re);//还原出原来的子串
+}
+	
+
+int main()
+{
+	string s = "jrjasdqosoq";
+	cout << longestPalindrome(s) << endl;
 	return 0;
 }

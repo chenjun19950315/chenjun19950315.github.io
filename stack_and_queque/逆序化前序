@@ -16,33 +16,35 @@ string serial(BinTree bt)
 	return result;
 }
 
-//逆序列化前序
-BinTree reorder(queue<int> &q)
+BinTree reorder(queue<string>& que)
 {
-	int cur = q.front();
-	q.pop();
-	if (cur == 0)
-		return nullptr;
-//先序，为根左右的顺序
-	BinTree bt = new TNode;
-	bt->data = cur;
-	bt->left = reorder(q);
-	bt->right = reorder(q);
-	return bt;
+	string cur = que.front();
+	que.pop();
+	if (cur == "#")
+		return NULL;
+	stringstream ss;
+	ss << cur;
+	int curValue;
+	ss >> curValue;
+	BinTree root = new TNode;
+	root->data = curValue;
+	root->left = reorder(que);
+	root->right= reorder(que);
+	return root;
 }
-//逆序列化前序
-BinTree deSerialization(string s)
+BinTree deSerialization(string str)
 {
-	//将节点值先转化好
-	queue<int> q;
-	for (int i = 0; i < s.size()-1; i = i + 2)
-	{
-		if (s[i] == '#')
-			q.push(0);
-		else
-			q.push(s[i] - '0');
+	queue<string> que;
+	for (int i = 0; i < str.size();++i ) {
+		string t;
+		while (str[i] != '_') {
+			t = t + str[i];
+			++i;
+		}
+		que.push(t);
 	}
-	return  reorder(q);
+	return reorder(que);
+}return  reorder(q);
 }
 
 int main() {

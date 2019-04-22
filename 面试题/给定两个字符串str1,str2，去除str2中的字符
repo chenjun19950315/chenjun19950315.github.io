@@ -1,0 +1,30 @@
+//解题思路:用一个哈希表保存str2的字符，用来判断是否为str1中要删除的字符
+//设置两个快慢指针指向str1，如果当前字符cur为要删除的字符，fast++，否则将fast指向的字符赋值给slow，slow++,fast++
+//原本只要在最后加一个'\0'就结束了，但是C++中string不能根据'\0'来结尾，所以用了substr,https://blog.csdn.net/qq_31779399/article/details/51520603
+void deleteRepeat(string& str1, const string& str2)
+{
+	set<char> m;
+	for (int i = 0; i < str2.size(); i++)
+		m.insert(str2[i]);
+	int fast = 0;
+	int slow = 0;
+	int len = 0;
+	while (str1[fast] != '\0') {
+		if (m.find(str1[fast]) != m.end())
+			++fast;
+		else
+		{
+			str1[slow++] = str1[fast++];
+			len++;
+		}
+		
+	}
+	str1=str1.substr(0,len);
+	cout << str1 << endl;
+}
+int main()
+{
+	string str1 = "abcebdfa";
+	string str2 = "abd";
+	deleteRepeat(str1, str2);
+	

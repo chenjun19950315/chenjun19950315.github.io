@@ -45,3 +45,51 @@ void heapSort(vector<int> &arr)
 	}
 	
 }
+
+
+
+方式二
+void heapInsert(vector<int>& arr, int size)
+{
+	int child = size;
+	int parent = (child - 1) / 2;
+	while (arr[parent] < arr[child])
+	{
+		swap(arr[parent],arr[child]);
+		child = parent;
+		parent= (child - 1) / 2;
+	}
+}
+void heapDelete(vector<int>& arr, int size)
+{
+	int left = 1;
+	int right = 2;
+	int cur = 0;
+	while (left <= size)
+	{
+		int maxIdx = left;
+		if (left + 1 <= size && arr[left] < arr[left + 1])
+			maxIdx = left + 1;
+		if (arr[maxIdx] > arr[cur])
+		{
+			swap(arr[maxIdx], arr[cur]);
+			cur = maxIdx;
+			left = 2 * maxIdx + 1;
+			continue;
+		}
+		else
+			break;
+	}
+}
+void heap(vector<int>& arr)
+{
+	for (auto i = 0; i < arr.size(); i++)
+		heapInsert(arr, i);
+	int size = arr.size() - 1;
+	while (size > 0)
+	{
+		swap(arr[0], arr[size--]);
+		heapDelete(arr, size);
+	}
+}
+

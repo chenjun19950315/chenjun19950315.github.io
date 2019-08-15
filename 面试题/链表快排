@@ -1,0 +1,66 @@
+//经典的快排
+vector<int> partition(vector<int> &arr, int left, int right)
+{
+
+	//每次选取第一个
+	int k = arr[left];
+	int less = left;
+	int cur = left+1;
+	
+	while (cur <=right)
+	{
+  //注意这里只能是小于
+		if (arr[cur] < k)
+			swap(arr[cur++], arr[++less]);
+		else
+			cur++;
+	}
+  //最后需要交换，保证只有两个数的时候正确
+	swap(arr[left], arr[less]);
+	return{ less};
+}
+
+void quick(vector<int> &arr,int left,int right)
+{
+	if (left < right)
+	{
+		vector<int> r = partition(arr, left, right);
+		quick(arr, left, r[0]);
+		quick(arr, r[0]+1, right);
+	}
+	
+}
+
+int main()
+{ 
+	vector<int> arr{ 2,5,21,6,3,1,8,4 };
+	quick(arr,0,arr.size()-1);
+	for (auto a : arr)
+		cout << a << " ";
+	cout << endl;
+	return 0;
+}
+
+
+//链表的快排
+void quicksort(Linklist head, Linklist end){
+	if(head == NULL || head == end)             //如果头指针为空或者链表为空，直接返回
+		return ;
+	int t;
+	Linklist p = head -> next;                  //用来遍历的指针
+	Linklist small = head;
+	while( p != end){
+		if( p -> data < head -> data){      //对于小于轴的元素放在左边
+			small = small -> next;
+			t = small -> data;
+			small -> data = p -> data;
+			p -> data = t;
+		}
+		p = p -> next;
+	}
+	t = head -> data;                           //遍历完后，对左轴元素与small指向的元素交换
+	head -> data = small -> data;
+	small -> data = t;
+	quicksort(head, small);                     //对左右进行递归
+	quicksort(small -> next, end);
+}
